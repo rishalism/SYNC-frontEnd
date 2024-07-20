@@ -4,12 +4,10 @@ import SideBar from "@/layouts/SideBar"
 
 function UserLayout() {
     return (
-        <div className="w-full relative h-screen">
+        <div className="w-full flex flex-row relative h-screen">
             <Header />
-            <div className="h-screen flex flex-row">
-                <SideBar />
-                <Outlet />
-            </div>
+            <SideBar />
+            <Outlet />
         </div>
     )
 }

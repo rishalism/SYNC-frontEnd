@@ -40,13 +40,10 @@ function SideBar() {
         }
     }
 
-    const addNewProject = (newProject: object) => {
-        setProjectDetails((prevDetails: any) => [...prevDetails, newProject]);
-    };
 
     useEffect(() => {
         fetchProjectDetails()
-    }, [])
+    }, [openModal])
 
 
     return (
@@ -101,7 +98,7 @@ function SideBar() {
                     </Sidebar.ItemGroup>
                 </Sidebar.Items>
             </Sidebar >
-            <ProjectModal setOpenModal={setOpenModal} openModal={openModal} addNewProject={addNewProject} />
+            <ProjectModal setOpenModal={setOpenModal} openModal={openModal} />
         </>
     );
 }

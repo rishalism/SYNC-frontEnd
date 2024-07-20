@@ -34,7 +34,6 @@ Api.interceptors.response.use(
         const originalRequest = error.config;
         if (error.response.status === 401 && !originalRequest._retry) {
             console.log('on axios interceptor');
-            
             originalRequest._retry = true;
             try {
                 const response = await refreshAccesToken()

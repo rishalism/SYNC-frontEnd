@@ -6,8 +6,9 @@ import Starcomponent from "@/components/ui/starcomponent";
 import { useFormik } from "formik";
 import { signupSchema } from "@/validations/formvalidation";
 import { ProjectLeadSignup } from "@/api/projectLeadApi";
-import { saveProjectLeadInfo } from "@/redux/slices/projectLead";
+import { saveUserInfo } from "@/redux/slices/userData";
 import { Link } from "react-router-dom";
+import { teamMemberSignup } from "@/api/teamMemberApi";
 interface FormValues {
   name: string;
   username: string;
@@ -37,8 +38,20 @@ function Signup(): JSX.Element {
           email: values.email,
           role
         }
-        saveProjectLeadInfo(userinfo)
+        saveUserInfo(userinfo)
         const response = await ProjectLeadSignup(values)
+        if (response) {
+          navigate('/verify-otp')
+        }
+      } else if (role == 'Team-Member') {
+        const userinfo = {
+          name: values.name,
+          username: values.username,
+          email: values.email,
+          role
+        }
+        saveUserInfo(userinfo)
+        const response = await teamMemberSignup(values)
         if (response) {
           navigate('/verify-otp')
         }

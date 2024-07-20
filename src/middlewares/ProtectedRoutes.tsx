@@ -1,5 +1,4 @@
 import { RootState } from "@/app/store"
-import { userInfo } from "os"
 import { useSelector } from "react-redux"
 import { Navigate, Outlet, useLocation } from "react-router-dom"
 

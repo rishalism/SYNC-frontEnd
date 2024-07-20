@@ -6,8 +6,7 @@ import ProjectModal from '@/components/ui/ProjectModal';
 import { useState } from 'react';
 
 
-function EmptyProjectPage() {
-    const [openModal, setOpenModal] = useState(false);
+function EmptyProjectPage({ openModal, setOpenModal }: any) {
 
     return (
         <div className='flex flex-col items-center justify-center h-screen'>

@@ -1,23 +1,23 @@
 // utils/localStorage.ts
 
-interface UserInfo {
+export interface UserInfo {
     name: string;
     email: string;
     otp?: string;
     role: string;
 }
 
-const STORAGE_KEY = 'projectLeadInfo';
+const STORAGE_KEY = 'userData';
 
-export const saveProjectLeadInfo = (info: UserInfo): void => {
+export const saveUserInfo = (info: UserInfo): void => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(info));
 };
 
-export const getProjectLeadInfo = (): UserInfo | null => {
+export const getUserInfo = (): UserInfo | null => {
     const storedInfo = localStorage.getItem(STORAGE_KEY);
     return storedInfo ? JSON.parse(storedInfo) : null;
 };
 
-export const clearProjectLeadInfo = (): void => {
+export const clearUserInfo = (): void => {
     localStorage.removeItem(STORAGE_KEY);
 };

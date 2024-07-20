@@ -1,7 +1,8 @@
 import { ProjectLeadLogin } from "@/api/projectLeadApi";
+import { teamMemberLogin } from "@/api/teamMemberApi";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input";
-import { loginProjectlead } from "@/redux/slices/auth";
+import { loginProjectlead, loginTeamMember } from "@/redux/slices/auth";
 import { loginSchema } from "@/validations/formvalidation";
 import { useFormik } from "formik";
 import { FcGoogle } from "react-icons/fc";
@@ -21,7 +22,6 @@ function Login() {
         password: string;
     }
 
-
     const { errors, touched, handleBlur, handleChange, values, handleSubmit } = useFormik<Formvalues>({
         initialValues: {
             email: '',
@@ -29,10 +29,16 @@ function Login() {
         },
         validationSchema: loginSchema,
         onSubmit: async (values) => {
-            if (role == 'Project-Lead') {
+            if (role =='Project-Lead') {
                 const response = await ProjectLeadLogin(values)
                 if (response) {
                     dispatch(loginProjectlead(response.data))
+                    navigate('/overview')
+                }
+            } else if (role == 'Team-Member') {
+                const response = await teamMemberLogin(values)
+                if (response) {
+                    dispatch(loginTeamMember(response.data))
                     navigate('/overview')
                 }
             }

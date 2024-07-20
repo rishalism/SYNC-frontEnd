@@ -1,5 +1,6 @@
 import { resendOtp } from "@/api/commonApi";
 import { projectLeadEmailVerification, } from "@/api/projectLeadApi";
+import { teamMemberVerifyEmail } from "@/api/teamMemberApi";
 import { Button } from "@/components/ui/button";
 import {
     InputOTP,
@@ -7,7 +8,7 @@ import {
     InputOTPSlot,
 } from "@/components/ui/input-otp";
 import errorHandler from "@/middlewares/errorHandler";
-import { clearProjectLeadInfo, getProjectLeadInfo } from "@/redux/slices/projectLead";
+import { getUserInfo } from "@/redux/slices/userData";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -18,11 +19,13 @@ function Otp() {
     const [value, setValue] = useState("");
     const [otptimer, setOtpTimer] = useState(100)
     const [resend, setResend] = useState(false)
-    const projectLeadInfo = getProjectLeadInfo()
+    const userinfo = getUserInfo()
 
     const navigate = useNavigate()
 
     const location = useLocation()
+
+
     useEffect(() => {
         const queyparams = new URLSearchParams(location.search)
         const otp = queyparams?.get('otp');
@@ -30,31 +33,43 @@ function Otp() {
             setValue(otp)
         }
     })
-    const projectLeadData = {
-        name: projectLeadInfo?.name,
-        email: projectLeadInfo?.email,
+
+
+    const userdata = {
+        name: userinfo?.name,
+        email: userinfo?.email,
         otp: value,
-        role: projectLeadInfo?.role
+        role: userinfo?.role
     };
 
 
 
     async function handleSubmit() {
-        if (value.length === 6) {
+        if (value.length === 6 && userinfo?.role == 'Project-Lead') {
             try {
-                console.log(projectLeadData);
-                const response = await projectLeadEmailVerification(projectLeadData);
+                const response = await projectLeadEmailVerification(userdata);
                 if (response) {
-                    clearProjectLeadInfo()
-                    navigate(`/login/${projectLeadData.role}`)
+                    navigate(`/login/${userdata.role}`)
                 }
             } catch (error) {
                 toast('Verification failed. Please try again.');
             }
+        } else if (value.length === 6 && userinfo?.role == 'Team-Member') {
+            try {
+                const response = await teamMemberVerifyEmail(userdata)
+                if (response) {
+                    navigate(`/login/${userdata.role}`)
+                }
+            } catch (error) {
+                toast('Verification failed. Please try again.');
+            }
+
         } else {
             toast('Invalid OTP format. Please enter a 6-digit OTP.', { style: { color: "red" }, position: 'top-center' });
         }
     }
+
+
 
     async function resendTime() {
         setResend(true)
@@ -73,8 +88,7 @@ function Otp() {
 
         }, 1000)
         try {
-            console.log(projectLeadData.otp);
-            const response = await resendOtp(projectLeadData)
+            const response = await resendOtp(userdata)
             if (response) {
                 toast('OTP have sent to your email', { position: 'top-center' })
             }
@@ -95,7 +109,7 @@ function Otp() {
                 <div className="w-full">
                     <h2 className="text-5xl capitalize font-bold">Enter Code</h2>
                     <p className="text-neutral-400 mt-3">
-                        We’ve sent an <b>OTP</b> with an activation code <br /> to your email  {projectLeadData?.email}
+                        We’ve sent an <b>OTP</b> with an activation code <br /> to your email  {userdata?.email}
                     </p>
                     <div className="flex items-center justify-center mt-5 flex-col w-full">
                         <InputOTP

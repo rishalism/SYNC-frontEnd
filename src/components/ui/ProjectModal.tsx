@@ -19,7 +19,7 @@ import { createProject } from "@/api/projectLeadApi";
 import { toast } from "sonner";
 import errorHandler from "@/middlewares/errorHandler";
 
-function ProjectModal({ setOpenModal, openModal, addNewProject }: any) {
+function ProjectModal({ setOpenModal, openModal }: any) {
 
     const { ProjectleadInfo } = useSelector((state: RootState) => state.auth)
 
@@ -44,7 +44,6 @@ function ProjectModal({ setOpenModal, openModal, addNewProject }: any) {
             try {
                 const response = await createProject(projectdetails)
                 if (response) {
-                    addNewProject(response)
                     toast.success('new project created', { position: 'top-center' })
                     setOpenModal(false)
                 }

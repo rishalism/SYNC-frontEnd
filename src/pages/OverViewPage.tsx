@@ -3,39 +3,73 @@ import EmptyProjectPage from "@/components/EmptyProjectPage"
 import { Button } from "@/components/ui/button";
 import errorHandler from "@/middlewares/errorHandler";
 import { useEffect, useState } from "react"
-import { FiEdit2 } from "react-icons/fi";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import IProjects from "@/types/interfaces/Iprojects";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { toast } from "sonner";
 
 
 function OverViewPage() {
 
-    const [projects, setProject] = useState<any[] | null>(null);
+    const [projects, setProject] = useState<IProjects | null>(null);
+    const [openModal, setOpenModal] = useState(false);
+    const { ProjectleadInfo } = useSelector((state: RootState) => state.auth)
     async function fetchProjectDetails() {
         try {
             const projectData: any = await getProject()
-            console.log(projectData.projectData);
             if (projectData?.projectData) {
-                setProject(projectData.projectData)
+                setProject(projectData.projectData[0])
             }
         } catch (error) {
             errorHandler(error)
         }
     }
 
+    
     useEffect(() => {
         fetchProjectDetails()
-    }, [])
+    }, [openModal])
+
+
+    function HandleEditProject() {
+
+    }
+
+    function HandleDeleteProject() {
+
+    }
 
     return (
-        <div className='flex flex-col w-full items-center justify-center '>
+        <div className='flex flex-col w-full items-center justify-center  p-40'>
             {projects ?
-                <div className="w-[60%]  p-12  border-2 shadow-md rounded-lg " >
+                <div className="p-12  w-full border-2 shadow-md rounded-lg " >
                     <div className="flex flex-col w-full h-full gap-8 ">
                         <div className="flex justify-between">
-                            <h2 className="text-4xl font-bold ">Project headline</h2>
-                            <Button variant={'ghost'}><FiEdit2 /></Button>
-                        </div>
-                        <p className="text-sm text-neutral-500" >Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque sed rem vero cupiditate ipsa voluptatibus debitis corporis animi eligendi. Quod aliquid adipisci aspernatur numquam laudantium, tenetur error incidunt provident saepe, exercitationem labore corporis eligendi quos ipsa tempora id ut itaque sunt dolore cum qui optio atque. Eius necessitatibus vitae perspiciatis?</p>
+                            <h2 className="text-4xl font-bold ">{projects?.projectName}</h2>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="secondary" size="icon">
+                                        <BsThreeDotsVertical />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuItem onClick={HandleEditProject}>
+                                        Edit
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={HandleDeleteProject}>
+                                        Delete
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>                        </div>
+                        <p className="text-sm text-neutral-500" >{projects?.description}</p>
                         <div className="space-y-3">
                             <h2 className="text-3xl font-bold " >Project Lead</h2>
                             <div className="flex flex-row gap-4 text-neutral-500">
@@ -43,7 +77,7 @@ function OverViewPage() {
                                     <AvatarImage src="https://github.com/shadcn.png" alt="User avatar" />
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
-                                <span>project lead name</span>
+                                <span>{ProjectleadInfo?.name}</span>
                             </div>
                         </div>
                         <div className="space-y-3 mb-8">
@@ -70,7 +104,7 @@ function OverViewPage() {
                     </div>
                 </div>
 
-                : <EmptyProjectPage />}
+                : <EmptyProjectPage openModal={openModal} setOpenModal={setOpenModal} />}
 
         </div>
     )

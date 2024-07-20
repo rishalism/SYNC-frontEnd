@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { LuWebhook } from "react-icons/lu";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { Moon, Sun } from "lucide-react";
@@ -12,27 +12,33 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useTheme } from "@/components/theme-provider";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutProjectLead } from "@/redux/slices/auth";
+import { RootState } from "@/app/store";
+import { getUserInfo, UserInfo } from "@/redux/slices/userData";
 
-interface User {
-    // Define user properties here
-    // For example: id: string; name: string; etc.
-}
 
 function Header(): JSX.Element {
+
     const location = useLocation()
     const path: string = location.pathname
     const noBorderPages: string[] = ['/', '/choose-role', '/signup/Project-Lead', '/signup/Team-Member', '/login/Team-Member', '/login/Project-Lead', '/verify-otp']
     const borderPages = !noBorderPages.includes(path)
     const { setTheme } = useTheme();
+    const [user, setUser] = useState<UserInfo | null>();
 
-    const [user, setUser] = useState<User | null>(null);
+    const userdetails = getUserInfo()
+    useEffect(() => {
+        setUser(userdetails)
+    }, [])
+
+    console.log(user);
+
     const dispatch = useDispatch()
+
     function handleLogout() {
         dispatch(logoutProjectLead())
     }
-
 
     return (
         <div className={`w-full h-[3rem] top-0 fixed z-10 flex items-center ${borderPages ? 'border border-b-2' : ''} justify-between px-4`}>
@@ -41,9 +47,6 @@ function Header(): JSX.Element {
                 <Link to={'/'}><h1 className="text-3xl font-bold">SYNC</h1></Link>
             </div>
             {user ?
-                <div>
-                    <Link to={'/choose-role'}><Button>Login</Button></Link>
-                </div> :
                 <div className="flex lg:space-x-3 items-center">
                     <div>
                         <DropdownMenu>
@@ -86,6 +89,11 @@ function Header(): JSX.Element {
                         </DropdownMenu>
                     </div>
                 </div>
+                :
+                <div>
+                    <Link to={'/choose-role'}><Button>Login</Button></Link>
+                </div>
+
             }
         </div>
     );
