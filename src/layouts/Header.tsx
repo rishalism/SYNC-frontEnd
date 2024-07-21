@@ -13,9 +13,10 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useTheme } from "@/components/theme-provider";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutProjectLead } from "@/redux/slices/auth";
+import { logoutProjectLead, logoutTeamMember } from "@/redux/slices/auth";
 import { RootState } from "@/app/store";
-import { getUserInfo, UserInfo } from "@/redux/slices/userData";
+import { clearUserInfo, getUserInfo, UserInfo } from "@/redux/slices/userData";
+import { UserRole } from "@/types/user";
 
 
 function Header(): JSX.Element {
@@ -26,19 +27,30 @@ function Header(): JSX.Element {
     const borderPages = !noBorderPages.includes(path)
     const { setTheme } = useTheme();
     const [user, setUser] = useState<UserInfo | null>();
-
+    const [islogin, setIslogin] = useState(true)
     const userdetails = getUserInfo()
-    useEffect(() => {
-        setUser(userdetails)
-    }, [])
-
-    console.log(user);
-
     const dispatch = useDispatch()
 
+    const ProjectleadInfo = useSelector((state: RootState) => state.auth.ProjectleadInfo);
+    const TeamMemberInfo = useSelector((state: RootState) => state.auth.TeamMemberInfo);
+
+    useEffect(() => {
+        if (userdetails?.role === UserRole.projectlead) {
+            setUser(ProjectleadInfo);
+        } else {
+            setUser(TeamMemberInfo);
+        }
+    }, [ ProjectleadInfo, TeamMemberInfo, userdetails]);
+
     function handleLogout() {
+        setUser(null)
+        setIslogin(!islogin)
+        clearUserInfo()
         dispatch(logoutProjectLead())
+        dispatch(logoutTeamMember())
     }
+
+    console.log(user);
 
     return (
         <div className={`w-full h-[3rem] top-0 fixed z-10 flex items-center ${borderPages ? 'border border-b-2' : ''} justify-between px-4`}>
@@ -77,7 +89,7 @@ function Header(): JSX.Element {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Avatar className='w-7 h-7'>
-                                    <AvatarImage src="https://github.com/shadcn.png" alt="User avatar" />
+                                    <AvatarImage src={`${user.avatar || "https://github.com/shadcn.png "}`} alt="User avatar" />
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
                             </DropdownMenuTrigger>

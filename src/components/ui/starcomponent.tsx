@@ -1,7 +1,5 @@
+import GoogleSignUp from "../google/googleSignUp"
 
-import { Button } from "@/components/ui/button"
-import { FcGoogle } from "react-icons/fc";
-import React from "react";
 
 function Starcomponent(): JSX.Element {
     return (<>
@@ -18,9 +16,7 @@ function Starcomponent(): JSX.Element {
                 <path d="M30.365 90.5079C30.5171 89.1767 32.4509 89.1767 32.6029 90.5079L32.6328 90.7696C33.3867 97.3695 38.6749 102.531 45.2912 103.125C46.6125 103.243 46.6125 105.174 45.2912 105.292C38.6749 105.886 33.3867 111.047 32.6328 117.647L32.6029 117.909C32.4509 119.24 30.5171 119.24 30.365 117.909L30.3351 117.647C29.5813 111.047 24.293 105.886 17.6767 105.292C16.3554 105.174 16.3554 103.243 17.6767 103.125C24.293 102.531 29.5813 97.3695 30.3351 90.7695L30.365 90.5079Z" fill="#F1F3F4" stroke="black" />
             </svg>
         </div>
-        <div className="flex  flex-col">
-            <Button className="border-2 gap-3 capitalize" variant={'outline'}><FcGoogle /> Signin with google</Button>
-        </div>
+        <GoogleSignUp />
     </>
     )
 }

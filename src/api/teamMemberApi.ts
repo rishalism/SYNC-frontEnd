@@ -30,3 +30,23 @@ export async function teamMemberLogin(user: object) {
         errorHandler(error)
     }
 }
+
+
+export async function teamMemberGoogleLogin(user: object) {
+    try {
+        const response = await Api.post(TEAM_MEMBER_ENDPOINTS.GOOGLE_LOGIN, user)
+        return response
+    } catch (error) {
+        errorHandler(error)
+    }
+}
+
+
+export async function teamMemberGoogleSignup(user: object) {
+    try {
+        const response = await Api.post(TEAM_MEMBER_ENDPOINTS.GOOGLE_SIGNUP, user)
+        return response
+    } catch (error) {
+        errorHandler(error)
+    }
+}

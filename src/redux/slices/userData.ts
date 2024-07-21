@@ -2,9 +2,10 @@
 
 export interface UserInfo {
     name: string;
-    email: string;
+    email?: string;
     otp?: string;
     role: string;
+    avatar? :string;
 }
 
 const STORAGE_KEY = 'userData';

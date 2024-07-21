@@ -9,7 +9,6 @@ const Api = axios.create({
 
 
 
-// Add a request interceptor here 
 
 Api.interceptors.request.use((config) => {
     // Do something before request is sent
@@ -26,7 +25,6 @@ Api.interceptors.request.use((config) => {
 
 
 
-// Add a response interceptor here
 
 Api.interceptors.response.use(
     (response) => response,

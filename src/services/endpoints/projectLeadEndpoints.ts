@@ -4,6 +4,8 @@ export enum PROJECT_LEAD_ENDPOINTS {
     SIGNUP = `${Project_lead_base_Url}/signup`,
     LOGIN = `${Project_lead_base_Url}/login`,
     VERIFY_EMAIL = `${Project_lead_base_Url}/signup-verify`,
+    GOOGLE_LOGIN = `${Project_lead_base_Url}/auth/google-signin`,
+    GOOGLE_SIGNUP = `${Project_lead_base_Url}/auth/google-signup`,
     CREATE_PROJECT = `${Project_lead_base_Url}/projects`,
     GET_PROJECTS = `${Project_lead_base_Url}/projects`,
 } 

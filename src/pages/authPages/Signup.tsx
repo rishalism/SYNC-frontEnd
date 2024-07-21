@@ -34,7 +34,6 @@ function Signup(): JSX.Element {
       if (role == 'Project-Lead') {
         const userinfo = {
           name: values.name,
-          username: values.username,
           email: values.email,
           role
         }
@@ -46,7 +45,6 @@ function Signup(): JSX.Element {
       } else if (role == 'Team-Member') {
         const userinfo = {
           name: values.name,
-          username: values.username,
           email: values.email,
           role
         }

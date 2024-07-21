@@ -1,14 +1,13 @@
 import { ProjectLeadLogin } from "@/api/projectLeadApi";
 import { teamMemberLogin } from "@/api/teamMemberApi";
+import GoogleSignin from "@/components/google/GoogleSignIn";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input";
 import { loginProjectlead, loginTeamMember } from "@/redux/slices/auth";
 import { loginSchema } from "@/validations/formvalidation";
 import { useFormik } from "formik";
-import { FcGoogle } from "react-icons/fc";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { toast } from "sonner";
 
 
 function Login() {
@@ -29,7 +28,7 @@ function Login() {
         },
         validationSchema: loginSchema,
         onSubmit: async (values) => {
-            if (role =='Project-Lead') {
+            if (role == 'Project-Lead') {
                 const response = await ProjectLeadLogin(values)
                 if (response) {
                     dispatch(loginProjectlead(response.data))
@@ -73,9 +72,7 @@ function Login() {
                     <h1 className="text-center capitalize text-3xl font-bold">explore the app</h1>
                     <p className="text-sm text-neutral-400 text-center mt-3">Streamline your development process with powerful API testing, documentation, and collaboration tools</p>
                 </div>
-                <div className="flex  flex-col mt-8">
-                    <Button className="border-2 gap-3 py-6 capitalize" variant={'ghost'}><FcGoogle /> Signin with google</Button>
-                </div>
+                <GoogleSignin />
             </div>
             <div className="w-[400px] ">
                 <div className="flex justify-end">

@@ -27,8 +27,8 @@ function App() {
             <Route path="/login/:role" element={<Login />}></Route>
             <Route path="/verify-otp" element={<Otp />}></Route>
           </Route>
-          <Route element={<UserLayout />}>
-            <Route element={<ProtectedRoutes />}>
+          <Route element={<ProtectedRoutes />}>
+            <Route element={<UserLayout />}>
               <Route path="/Overview" element={<OverViewPage />}></Route>
             </Route>
           </Route>

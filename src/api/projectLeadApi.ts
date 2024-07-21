@@ -33,7 +33,27 @@ export async function ProjectLeadLogin(user: object) {
 }
 
 
+export async function SignUpWithGoogle(user: object) {
+    try {
 
+        const response = await Api.post(PROJECT_LEAD_ENDPOINTS.GOOGLE_SIGNUP, user)
+        return response
+
+    } catch (error) {
+        errorHandler(error)
+
+    }
+}
+
+
+export async function SignInWithGoogle(user: object) {
+    try {
+        const response = await Api.post(PROJECT_LEAD_ENDPOINTS.GOOGLE_LOGIN, user)
+        return response
+    } catch (error) {
+        errorHandler(error)
+    }
+}
 
 
 export async function createProject(projectdetails: object) {
@@ -50,7 +70,6 @@ export async function createProject(projectdetails: object) {
 
 export async function getProject() {
     try {
-
         const projectData = await Api.get(PROJECT_LEAD_ENDPOINTS.GET_PROJECTS)
         return projectData.data
     } catch (error) {

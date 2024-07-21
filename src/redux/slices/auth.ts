@@ -1,5 +1,6 @@
 import { accessLevel } from "@/types/user";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { saveUserInfo } from "./userData";
 
 
 interface ProjectleadInfo {
@@ -38,11 +39,14 @@ const initialState: AuthState = {
     TeamMemberInfo: isTeamMemberStored ? JSON.parse(isTeamMemberStored) : null
 };
 
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
         loginProjectlead: (state, action: PayloadAction<{ data: ProjectleadInfo; accesstoken: string }>) => {
+            const { name, role } = action.payload.data
+            saveUserInfo({ name, role })
             state.ProjectleadInfo = action.payload.data;
             localStorage.setItem('Project-Lead', JSON.stringify(action.payload.data));
             localStorage.setItem("accessToken", action.payload.accesstoken);
@@ -53,6 +57,8 @@ const authSlice = createSlice({
             localStorage.removeItem('accessToken');
         },
         loginTeamMember: (state, action: PayloadAction<{ data: TeamMemberInfo; accesstoken: string }>) => {
+            const { name, role } = action.payload.data
+            saveUserInfo({ name, role })
             state.ProjectleadInfo = action.payload.data;
             localStorage.setItem('Team-Member', JSON.stringify(action.payload.data));
             localStorage.setItem("accessToken", action.payload.accesstoken);

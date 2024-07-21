@@ -18,6 +18,8 @@ import { BsArrowBarRight } from "react-icons/bs";
 import { BsArrowBarLeft } from "react-icons/bs";
 import { IoDocumentOutline } from "react-icons/io5";
 import { NavLink } from "react-router-dom";
+import { getUserInfo } from "@/redux/slices/userData";
+import { UserRole } from "@/types/user";
 
 
 
@@ -27,7 +29,8 @@ function SideBar() {
     const [openModal, setOpenModal] = useState(false);
 
     const [projectDetails, setProjectDetails] = useState<any[] | null>(null);
-
+    const userdata = getUserInfo()
+    
     async function fetchProjectDetails() {
         try {
             const projectData: any = await getProject()
@@ -51,8 +54,10 @@ function SideBar() {
             <Sidebar aria-label="Sidebar with multi-level dropdown example" className={`h-92 mt-12  transform duration-300`} collapsed={collapse} >
                 <Sidebar.Items>
                     <Sidebar.ItemGroup>
-                        <Sidebar.Collapse icon={FaRegFolderOpen} label="Projects">
-                            <Sidebar.Item onClick={() => setOpenModal(true)} className={'cursor-pointer text-sm '} icon={RiAddCircleLine}>New Project</Sidebar.Item>
+                        <Sidebar.Collapse icon={FaRegFolderOpen}  label="Projects">
+                            {userdata?.role == UserRole.projectlead &&
+                                <Sidebar.Item onClick={() => setOpenModal(true)} className={'cursor-pointer text-sm '} icon={RiAddCircleLine}>New Project</Sidebar.Item>
+                            }
                             {
                                 projectDetails?.map((projects: IProjects) => {
                                     return (
