@@ -1,11 +1,13 @@
 // utils/localStorage.ts
 
+import { UnknownAction } from "@reduxjs/toolkit";
+
 export interface UserInfo {
     name: string;
     email?: string;
     otp?: string;
     role: string;
-    avatar? :string;
+    avatar?: string;
 }
 
 const STORAGE_KEY = 'userData';
@@ -19,6 +21,6 @@ export const getUserInfo = (): UserInfo | null => {
     return storedInfo ? JSON.parse(storedInfo) : null;
 };
 
-export const clearUserInfo = (): void => {
+export const clearUserInfo = (): any => {
     localStorage.removeItem(STORAGE_KEY);
 };

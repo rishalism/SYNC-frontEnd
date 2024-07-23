@@ -55,24 +55,3 @@ export async function SignInWithGoogle(user: object) {
     }
 }
 
-
-export async function createProject(projectdetails: object) {
-    try {
-        const response = await Api.post(PROJECT_LEAD_ENDPOINTS.CREATE_PROJECT, projectdetails)
-        return response
-    } catch (error) {
-        console.log('heeeey from errror');
-
-        errorHandler(error)
-    }
-}
-
-
-export async function getProject() {
-    try {
-        const projectData = await Api.get(PROJECT_LEAD_ENDPOINTS.GET_PROJECTS)
-        return projectData.data
-    } catch (error) {
-        errorHandler(error)
-    }
-}

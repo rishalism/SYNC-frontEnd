@@ -14,7 +14,16 @@ export async function resendOtp(user: object) {
 
 export async function refreshAccesToken() {
     try {
-        const response = await Api.post(COMMON_ENDPOINTS.REFRESH_TOKEN)
+        const response = await Api.post(COMMON_ENDPOINTS.REFRESH_TOKEN, {}, { withCredentials: true });
+        return response;
+    } catch (error) {
+        errorHandler(error);
+    }
+}
+
+export async function logoutUsers() {
+    try {
+        const response = await Api.post(COMMON_ENDPOINTS.LOGOUT)
         return response
     } catch (error) {
         errorHandler(error)

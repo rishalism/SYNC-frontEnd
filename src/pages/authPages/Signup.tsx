@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,6 +9,8 @@ import { ProjectLeadSignup } from "@/api/projectLeadApi";
 import { saveUserInfo } from "@/redux/slices/userData";
 import { Link } from "react-router-dom";
 import { teamMemberSignup } from "@/api/teamMemberApi";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 interface FormValues {
   name: string;
   username: string;
@@ -21,6 +23,13 @@ function Signup(): JSX.Element {
 
   const { role } = useParams<{ role: string }>();
   const navigate = useNavigate()
+  const { ProjectleadInfo, TeamMemberInfo } = useSelector((state: RootState) => state.auth)
+  useEffect(() => {
+    if (ProjectleadInfo || TeamMemberInfo) {
+      navigate('/overview')
+    }
+  }, [navigate, ProjectleadInfo, TeamMemberInfo])
+
   const { values, handleBlur, handleChange, handleSubmit, errors, touched, isSubmitting } = useFormik<FormValues>({
     initialValues: {
       name: '',

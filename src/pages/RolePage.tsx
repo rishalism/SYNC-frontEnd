@@ -8,16 +8,17 @@ import { RootState } from "@/app/store";
 
 function RolePage() {
 
-    const [role, selectRole] = useState<UserRole>('Project-Lead')
+    const [role, selectRole] = useState<UserRole>(UserRole.projectlead)
 
 
-    const { ProjectleadInfo } = useSelector((state: RootState) => state.auth)
+    const { ProjectleadInfo, TeamMemberInfo } = useSelector((state: RootState) => state.auth)
+    const accessToken = localStorage.getItem('accessToken')
     const navigate = useNavigate()
     useEffect(() => {
-        if (ProjectleadInfo) {
+        if (ProjectleadInfo || TeamMemberInfo && accessToken) {
             navigate('/overview');
         }
-    }, [ProjectleadInfo, navigate]);
+    }, [ProjectleadInfo, TeamMemberInfo, navigate]);
 
 
     function handleSelectRole(role: UserRole) {
@@ -43,11 +44,11 @@ function RolePage() {
                     <RadioGroup defaultValue="option-one">
                         <div className={`${role == 'Project-Lead' ? 'outline-dotted' : 'outline-none'} w-full flex justify-between rounded-lg p-7 border-2 `}>
                             <h1 className="font-bold">project Manager</h1>
-                            <RadioGroupItem onClick={() => handleSelectRole('Project-Lead')} value="option-one" id="option-one" />
+                            <RadioGroupItem onClick={() => handleSelectRole(UserRole.projectlead)} value="option-one" id="option-one" />
                         </div>
                         <div className={`${role == 'Team-Member' ? 'outline-dotted' : 'outline-none'} w-full flex justify-between rounded-lg p-7 border-2 `}>
                             <h1 className="font-bold">Team Member</h1>
-                            <RadioGroupItem onClick={() => handleSelectRole('Team-Member')} value="option-two" id="option-two" />
+                            <RadioGroupItem onClick={() => handleSelectRole(UserRole.teammember)} value="option-two" id="option-two" />
                         </div>
                     </RadioGroup>
                 </div>

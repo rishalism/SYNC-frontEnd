@@ -1,17 +1,18 @@
 import { ProjectLeadLogin } from "@/api/projectLeadApi";
 import { teamMemberLogin } from "@/api/teamMemberApi";
+import { RootState } from "@/app/store";
 import GoogleSignin from "@/components/google/GoogleSignIn";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input";
 import { loginProjectlead, loginTeamMember } from "@/redux/slices/auth";
 import { loginSchema } from "@/validations/formvalidation";
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 
 function Login() {
-
 
     const { role } = useParams()
     const dispatch = useDispatch()
@@ -20,6 +21,13 @@ function Login() {
         email: string;
         password: string;
     }
+
+    const { ProjectleadInfo, TeamMemberInfo } = useSelector((state: RootState) => state.auth)
+    useEffect(() => {
+        if (ProjectleadInfo || TeamMemberInfo) {
+            navigate('/overview')
+        }
+    }, [navigate, TeamMemberInfo, ProjectleadInfo])
 
     const { errors, touched, handleBlur, handleChange, values, handleSubmit } = useFormik<Formvalues>({
         initialValues: {

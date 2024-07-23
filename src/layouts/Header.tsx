@@ -15,8 +15,9 @@ import { useTheme } from "@/components/theme-provider";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutProjectLead, logoutTeamMember } from "@/redux/slices/auth";
 import { RootState } from "@/app/store";
-import { clearUserInfo, getUserInfo, UserInfo } from "@/redux/slices/userData";
+import { getUserInfo, UserInfo } from "@/redux/slices/userData";
 import { UserRole } from "@/types/user";
+import { logoutUsers } from "@/api/commonApi";
 
 
 function Header(): JSX.Element {
@@ -27,7 +28,6 @@ function Header(): JSX.Element {
     const borderPages = !noBorderPages.includes(path)
     const { setTheme } = useTheme();
     const [user, setUser] = useState<UserInfo | null>();
-    const [islogin, setIslogin] = useState(true)
     const userdetails = getUserInfo()
     const dispatch = useDispatch()
 
@@ -37,20 +37,18 @@ function Header(): JSX.Element {
     useEffect(() => {
         if (userdetails?.role === UserRole.projectlead) {
             setUser(ProjectleadInfo);
-        } else {
+        } else if (userdetails?.role == UserRole.teammember) {
             setUser(TeamMemberInfo);
         }
-    }, [ ProjectleadInfo, TeamMemberInfo, userdetails]);
+    }, [user, ProjectleadInfo, TeamMemberInfo, userdetails]);
 
     function handleLogout() {
         setUser(null)
-        setIslogin(!islogin)
-        clearUserInfo()
+        // logoutUsers()
         dispatch(logoutProjectLead())
         dispatch(logoutTeamMember())
     }
 
-    console.log(user);
 
     return (
         <div className={`w-full h-[3rem] top-0 fixed z-10 flex items-center ${borderPages ? 'border border-b-2' : ''} justify-between px-4`}>

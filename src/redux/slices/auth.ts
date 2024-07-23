@@ -1,6 +1,6 @@
 import { accessLevel } from "@/types/user";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { saveUserInfo } from "./userData";
+import { clearUserInfo, saveUserInfo } from "./userData";
 
 
 interface ProjectleadInfo {
@@ -52,6 +52,7 @@ const authSlice = createSlice({
             localStorage.setItem("accessToken", action.payload.accesstoken);
         },
         logoutProjectLead: (state) => {
+            clearUserInfo()
             state.ProjectleadInfo = null;
             localStorage.removeItem('Project-Lead');
             localStorage.removeItem('accessToken');
@@ -59,14 +60,17 @@ const authSlice = createSlice({
         loginTeamMember: (state, action: PayloadAction<{ data: TeamMemberInfo; accesstoken: string }>) => {
             const { name, role } = action.payload.data
             saveUserInfo({ name, role })
-            state.ProjectleadInfo = action.payload.data;
+            state.TeamMemberInfo = action.payload.data;
             localStorage.setItem('Team-Member', JSON.stringify(action.payload.data));
             localStorage.setItem("accessToken", action.payload.accesstoken);
         },
         logoutTeamMember: (state) => {
-            state.ProjectleadInfo = null;
+            clearUserInfo()
+            state.TeamMemberInfo = null;
             localStorage.removeItem('Team-Member');
             localStorage.removeItem('accessToken');
+            localStorage.removeItem("userData");
+
         }
     }
 });

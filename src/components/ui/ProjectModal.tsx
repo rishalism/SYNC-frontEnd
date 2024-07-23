@@ -15,9 +15,8 @@ import { RootState } from "@/app/store";
 import { Button } from "./button";
 import { useFormik } from "formik";
 import { NewProjectSchema } from "@/validations/formvalidation";
-import { createProject } from "@/api/projectLeadApi";
-import { toast } from "sonner";
 import errorHandler from "@/middlewares/errorHandler";
+import { createProject } from "@/api/projectsApi";
 
 function ProjectModal({ setOpenModal, openModal }: any) {
 
@@ -44,7 +43,6 @@ function ProjectModal({ setOpenModal, openModal }: any) {
             try {
                 const response = await createProject(projectdetails)
                 if (response) {
-                    toast.success('new project created', { position: 'top-center' })
                     setOpenModal(false)
                 }
             } catch (error) {

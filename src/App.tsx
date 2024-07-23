@@ -11,7 +11,7 @@ import OverViewPage from "./pages/OverViewPage"
 import UserLayout from "./layouts/UserLayout"
 import AuthLayout from "./layouts/AuthLayout"
 import ProtectedRoutes from "./middlewares/ProtectedRoutes"
-
+import AuthHandler from "./middlewares/AuthHandler"
 
 function App() {
 
@@ -28,8 +28,10 @@ function App() {
             <Route path="/verify-otp" element={<Otp />}></Route>
           </Route>
           <Route element={<ProtectedRoutes />}>
-            <Route element={<UserLayout />}>
-              <Route path="/Overview" element={<OverViewPage />}></Route>
+            <Route element={<AuthHandler />}>
+              <Route element={<UserLayout />}>
+                <Route path="/Overview" element={<OverViewPage />}></Route>
+              </Route>
             </Route>
           </Route>
         </Routes>

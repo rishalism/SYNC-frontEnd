@@ -14,7 +14,6 @@ const errorHandler = (err: unknown) => {
             toast.error(errorMessage as string, { style: { color: "red" }, position: 'top-center' })
         }
     } else {
-        console.log(err),'---------err------------err------------------err------------------err-----------------err';
         toast.error("An unexpected error occurred Please try again or try reloading the page", { style: { color: "red" }, position: 'top-center' });
     }
 };

@@ -1,6 +1,6 @@
 
 
-export default interface IProjects {
+export interface IProjects {
     _id?: string;
     projectName: string;
     projectOwner: string;
@@ -9,3 +9,6 @@ export default interface IProjects {
     createdAt?: Date;
     updatedAt?: Date
 }
+
+
+export default IProjects 
