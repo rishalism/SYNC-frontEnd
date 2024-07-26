@@ -55,3 +55,11 @@ export async function SignInWithGoogle(user: object) {
     }
 }
 
+export async function inviteTeamMember(user: object) {
+    try {
+        const response = await Api.post(PROJECT_LEAD_ENDPOINTS.INVITE_TEAMMEMBER, user)
+        return response
+    } catch (error) {
+        errorHandler(error)
+    }
+}

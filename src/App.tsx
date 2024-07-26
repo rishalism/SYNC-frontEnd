@@ -12,6 +12,8 @@ import UserLayout from "./layouts/UserLayout"
 import AuthLayout from "./layouts/AuthLayout"
 import ProtectedRoutes from "./middlewares/ProtectedRoutes"
 import AuthHandler from "./middlewares/AuthHandler"
+import MembersPage from "./pages/MembersPage"
+import AcceptInvitation from "./pages/authPages/AcceptInvitation"
 
 function App() {
 
@@ -26,11 +28,13 @@ function App() {
             <Route path="/signup/:role" element={<Signup />}></Route>
             <Route path="/login/:role" element={<Login />}></Route>
             <Route path="/verify-otp" element={<Otp />}></Route>
+            <Route path="/api/v1/links" element={<AcceptInvitation />}></Route>
           </Route>
           <Route element={<ProtectedRoutes />}>
             <Route element={<AuthHandler />}>
               <Route element={<UserLayout />}>
                 <Route path="/Overview" element={<OverViewPage />}></Route>
+                <Route path="/Members/:projectId" element={<MembersPage />}></Route>
               </Route>
             </Route>
           </Route>

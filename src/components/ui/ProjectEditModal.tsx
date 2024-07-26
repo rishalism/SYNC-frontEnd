@@ -21,9 +21,7 @@ import ProjectContext from "@/context/projectContext";
 
 function ProjectEditModal({ openModal, setOpenModal }: any) {
     const { ProjectleadInfo } = useSelector((state: RootState) => state.auth);
-    const { projects, selected }: any = useContext(ProjectContext);
-
-    console.log(selected, '-------------------project modal page ------------------------------------')
+    const { projects, selected, setSelected }: any = useContext(ProjectContext);
 
     interface FormValues {
         projectName: string;

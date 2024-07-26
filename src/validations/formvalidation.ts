@@ -51,3 +51,11 @@ export const NewProjectSchema = yup.object().shape({
         .min(30, 'Description should be at least 30 characters')
         .max(200, 'Description should not be more than 200 characters')
 });
+
+
+
+export const inviteMembersSchema = yup.object().shape({
+    email: yup.string()
+        .email('Invalid email address')
+        .required('Email is required'),
+})

@@ -17,14 +17,13 @@ import { logoutProjectLead, logoutTeamMember } from "@/redux/slices/auth";
 import { RootState } from "@/app/store";
 import { getUserInfo, UserInfo } from "@/redux/slices/userData";
 import { UserRole } from "@/types/user";
-import { logoutUsers } from "@/api/commonApi";
 
 
 function Header(): JSX.Element {
 
     const location = useLocation()
     const path: string = location.pathname
-    const noBorderPages: string[] = ['/', '/choose-role', '/signup/Project-Lead', '/signup/Team-Member', '/login/Team-Member', '/login/Project-Lead', '/verify-otp']
+    const noBorderPages: string[] = ['/', '/choose-role', '/signup/Project-Lead', '/signup/Team-Member', '/login/Team-Member', '/login/Project-Lead', '/verify-otp','/api/v1/links']
     const borderPages = !noBorderPages.includes(path)
     const { setTheme } = useTheme();
     const [user, setUser] = useState<UserInfo | null>();

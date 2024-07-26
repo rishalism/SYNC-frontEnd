@@ -109,7 +109,7 @@ function Otp() {
                 <div className="w-full">
                     <h2 className="text-5xl capitalize font-bold">Enter Code</h2>
                     <p className="text-neutral-400 mt-3">
-                        We’ve sent an <b>OTP</b> with an activation code <br /> to your email  {userdata?.email}
+                        We’ve sent an <b>OTP</b> with an activation code <br /> to your email  {userdata?.email}. <br />  OTP will expire in 5 min
                     </p>
                     <div className="flex items-center justify-center mt-5 flex-col w-full">
                         <InputOTP
