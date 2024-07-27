@@ -43,3 +43,14 @@ export async function deleteProject(projectId: string | undefined) {
         errorHandler(error)
     }
 }
+
+
+export async function addMemberIntoProject(user: object) {
+
+    try {
+        const response = await Api.post(PROJECTS_ENDPOINTS.ADD_MEMBER, user)
+        return response
+    } catch (error) {
+        errorHandler(error)
+    }
+}

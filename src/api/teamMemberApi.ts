@@ -50,3 +50,15 @@ export async function teamMemberGoogleSignup(user: object) {
         errorHandler(error)
     }
 }
+
+
+
+
+export async function AcceptProjectInvitation(data:object) {
+    try {
+        const response = await Api.post(TEAM_MEMBER_ENDPOINTS.ACCEPT_INVITATION,data )
+        return response
+    } catch (error) {
+        errorHandler(error)
+    }
+}

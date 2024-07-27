@@ -1,6 +1,7 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 const flowbite = require("flowbite-react/tailwind");
 const colors = require("tailwindcss/colors");
+const { nextui } = require("@nextui-org/react");
 const {
   default: flattenColorPalette,
 } = require("tailwindcss/lib/util/flattenColorPalette");
@@ -14,6 +15,7 @@ module.exports = {
     './components/**/*.{ts,tsx,js,jsx}',
     './app/**/*.{ts,tsx,js,jsx}',
     './src/**/*.{ts,tsx,js,jsx}',
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
     flowbite.content(),
   ],
   prefix: "",
@@ -81,8 +83,9 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
+    darkMode: "class",
   },
-  plugins: [require("tailwindcss-animate"), addVariablesForColors, require('daisyui'), flowbite.plugin()],
+  plugins: [require("tailwindcss-animate"), addVariablesForColors, require('daisyui'), flowbite.plugin(), nextui()],
 }
 
 

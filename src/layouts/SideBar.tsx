@@ -54,7 +54,7 @@ function SideBar() {
             <Sidebar aria-label="Sidebar with multi-level dropdown example" className={`h-92 mt-12 transform duration-300`} collapsed={collapse}>
                 <Sidebar.Items>
                     <Sidebar.ItemGroup>
-                        <Sidebar.Collapse icon={FaRegFolderOpen} label="Projects">
+                        <Sidebar.Collapse  icon={FaRegFolderOpen} label="Projects">
                             {userdata?.role === UserRole.projectlead && (
                                 <Sidebar.Item onClick={() => setOpenModal(true)} className={'cursor-pointer text-sm'} icon={RiAddCircleLine}>
                                     New Project

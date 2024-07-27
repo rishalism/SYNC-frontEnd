@@ -82,6 +82,8 @@ function OverViewPage() {
         }
     }
 
+    console.log(selected);
+
     return (
         <div className='flex flex-col w-full items-center justify-center p-40'>
             {selected ?
@@ -89,7 +91,7 @@ function OverViewPage() {
                     <div className="flex flex-col w-full h-full gap-8">
                         <div className="flex justify-between">
                             <h2 className="text-4xl font-bold">{selected?.projectName}</h2>
-                            <DropdownMenu>
+                            {ProjectleadInfo?.id && <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <Button variant="secondary" size="icon">
                                         <BsThreeDotsVertical />
@@ -103,38 +105,22 @@ function OverViewPage() {
                                         Delete
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
-                            </DropdownMenu>
+                            </DropdownMenu>}
                         </div>
                         <p className="text-sm text-neutral-500">{selected?.description}</p>
                         <div className="space-y-3">
                             <h2 className="text-3xl font-bold">Project Lead</h2>
                             <div className="flex flex-row gap-4 text-neutral-500">
                                 <Avatar className='w-10 h-10'>
-                                    <AvatarImage src={`${ProjectleadInfo?.avatar || "https://github.com/shadcn.png"}`} alt="User avatar" />
+                                    <AvatarImage src={`${selected?.projectOwner?.avatar || "https://github.com/shadcn.png"}`} alt="User avatar" />
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
-                                <span>{ProjectleadInfo?.name}</span>
+                                <span>{selected?.projectOwner?.name}</span>
                             </div>
                         </div>
                         <div className="space-y-3 mb-8">
                             <h2 className="text-3xl font-bold">Team Members</h2>
                             <div className="flex relative">
-                                <Avatar className='w-10 absolute h-10'>
-                                    <AvatarImage src="https://github.com/shadcn.png" alt="User avatar" />
-                                    <AvatarFallback>CN</AvatarFallback>
-                                </Avatar>
-                                <Avatar className='left-6 w-10 h-10 absolute'>
-                                    <AvatarImage src="https://github.com/shadcn.png" alt="User avatar" />
-                                    <AvatarFallback>CN</AvatarFallback>
-                                </Avatar>
-                                <Avatar className='left-12 w-10 h-10 absolute'>
-                                    <AvatarImage src="https://github.com/shadcn.png" alt="User avatar" />
-                                    <AvatarFallback>CN</AvatarFallback>
-                                </Avatar>
-                                <Avatar className='left-20 w-10 h-10 absolute'>
-                                    <AvatarImage src="https://github.com/shadcn.png" alt="User avatar" />
-                                    <AvatarFallback>CN</AvatarFallback>
-                                </Avatar>
                                 {selected?.ProjectMembers.map((members: string) => (
                                     <Avatar key={members} className='w-10 absolute h-10'>
                                         <AvatarImage src="https://github.com/shadcn.png" alt="User avatar" />

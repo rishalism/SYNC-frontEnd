@@ -5,5 +5,6 @@ export enum TEAM_MEMBER_ENDPOINTS {
   VERIFY = `${Team_Member_base_url}/signup-verify`,
   LOGIN = `${Team_Member_base_url}/login`,
   GOOGLE_LOGIN = `${Team_Member_base_url}/auth/google/login`,
-  GOOGLE_SIGNUP = `${Team_Member_base_url}/auth/google/signup`
+  GOOGLE_SIGNUP = `${Team_Member_base_url}/auth/google/signup`,
+  ACCEPT_INVITATION = `${Team_Member_base_url}/accept-invitation`
 }
