@@ -1,14 +1,19 @@
+import { RootState } from '@/app/store'
 import EmptyTeamPage from '@/components/EmptyMembersPage'
-import React from 'react'
+import MembersTable from '../components/Table/MembersTable.js'
+import { useSelector } from 'react-redux'
 
 function MembersPage() {
+    const { currentProjectInfo } = useSelector((state: RootState) => state.projects)
+
     return (
-        <div className='flex flex-col w-full items-center justify-center'>
-            {/* <div className='w-[500px] h-[500px] bg-green-300' >
-                   hey world
-            </div> */}
-            <EmptyTeamPage />
-        </div>
+        < div className='flex flex-col p-10  w-full mt-12 h-92 ' >
+            {currentProjectInfo?.ProjectMembers.length > 0 ?
+                <MembersTable />
+                :
+                <EmptyTeamPage />
+            }
+        </div >
     )
 }
 

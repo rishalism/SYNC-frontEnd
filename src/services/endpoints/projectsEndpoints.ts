@@ -6,5 +6,6 @@ export enum PROJECTS_ENDPOINTS {
     CREATE_PROJECT = `${BASE_URL}`,
     EDIT_PROJECT = `${BASE_URL}`,
     DELETE_PROJECT = `${BASE_URL}`,
-    ADD_MEMBER=`${BASE_URL}/add-member`
+    ADD_MEMBER = `${BASE_URL}/add-member`,
+    REMOVE_MEMBER = `${BASE_URL}/remove`
 }

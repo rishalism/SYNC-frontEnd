@@ -54,3 +54,15 @@ export async function addMemberIntoProject(user: object) {
         errorHandler(error)
     }
 }
+
+
+
+
+export async function RemoveMember(user: object) {
+    try {
+        const response = await Api.post(PROJECTS_ENDPOINTS.REMOVE_MEMBER, user)
+        return response
+    } catch (error) {
+        errorHandler(error)
+    }
+}

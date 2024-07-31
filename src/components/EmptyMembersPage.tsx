@@ -15,9 +15,9 @@ function EmptyMembersPage() {
 
     return (
         <>
-            <div className=''>
-                <Lottie className='ml-16 max-w-[500px] ' animationData={TeamPageAnimation} loop={true} ></Lottie>
-                <p className='text-center mt-3 cursor-default font-semibold' >Your team page looks a bit lonely!  "Teamwork makes the dream work." – John C. Maxwell.<br /> {ProjectleadInfo && `Gather your squad🚀. and ${<Button onClick={() => setOpenModal(!openModal)} className='ml-2' variant={'outline'}>invite a Member !</Button>}`}</p>
+            <div className='flex flex-col items-center justify-center'>
+                <Lottie className='max-w-[500px] h-96 ' animationData={TeamPageAnimation} loop={true} ></Lottie>
+                <p className='text-center mt-3 cursor-default font-semibold' >Your team page looks a bit lonely!  "Teamwork makes the dream work." – John C. Maxwell.<br /> {ProjectleadInfo && <Button onClick={() => setOpenModal(!openModal)} className='ml-2 mt-4' variant={'outline'}>invite a Member !</Button>}</p>
             </div >
             <InviteModal openModal={openModal} setOpenModal={setOpenModal} />
         </>

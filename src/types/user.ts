@@ -9,3 +9,7 @@ export enum accessLevel {
     edit = 2
 }
 
+export enum Isblocked {
+    not_blocked = 0,
+    is_blocked = 1
+}

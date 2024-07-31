@@ -3,8 +3,9 @@ import { AcceptProjectInvitation } from '@/api/teamMemberApi'
 import { RootState } from '@/app/store'
 import { Button } from '@/components/ui/button'
 import SigninModal from '@/components/ui/SigninModal'
+import { logoutProjectLead } from '@/redux/slices/auth'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
@@ -15,7 +16,7 @@ function AcceptInvitation() {
     const queyparams = new URLSearchParams(location.search)
     const token = queyparams?.get('token');
     const projectId = queyparams?.get('projectId');
-
+    const dispatch = useDispatch()
     const { TeamMemberInfo } = useSelector((state: RootState) => state.auth)
     const [openModal, setOpenModal] = useState(false)
     const navigate = useNavigate()
@@ -23,6 +24,7 @@ function AcceptInvitation() {
     const handleInvitation = async () => {
         if (!TeamMemberInfo) {
             // open signup modal  for team member account
+            dispatch(logoutProjectLead())
             setOpenModal(true)
         } else {
 

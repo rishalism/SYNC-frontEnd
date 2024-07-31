@@ -1,7 +1,6 @@
 import { Sidebar, SidebarItem, SidebarItemGroup } from 'flowbite-react';
 import { FaRegFolderOpen } from 'react-icons/fa';
 import { LuFileSignature, LuLineChart } from 'react-icons/lu';
-import { LiaUserShieldSolid } from 'react-icons/lia';
 import { DiCodeBadge } from 'react-icons/di';
 import { TbDatabaseEdit } from 'react-icons/tb';
 import { IoDocumentsOutline, IoVideocamOutline } from 'react-icons/io5';
@@ -10,7 +9,7 @@ import { RiAddCircleLine } from 'react-icons/ri';
 import ProjectModal from '@/components/ui/ProjectModal';
 import { useContext, useState, useEffect } from 'react';
 import errorHandler from '@/middlewares/errorHandler';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { getUserInfo } from '@/redux/slices/userData';
 import { UserRole } from '@/types/user';
 import { getProject } from '@/api/projectsApi';
@@ -19,6 +18,9 @@ import { BsArrowBarLeft } from "react-icons/bs";
 import ProjectContext from '@/context/projectContext';
 import IProjects from '@/types/interfaces/Iprojects';
 import { IoDocumentOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentProjects } from '@/redux/slices/projects';
+import { RootState } from '@/app/store';
 
 
 function SideBar() {
@@ -27,6 +29,9 @@ function SideBar() {
     const location = useLocation()
     const [active, setActive] = useState('/overView')
     const userdata = getUserInfo();
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const { currentProjectInfo } = useSelector((state: RootState) => state.projects)
 
     async function fetchProjectDetails() {
         try {
@@ -42,6 +47,8 @@ function SideBar() {
     function handleSelectProject(projectId: string | undefined) {
         const filteredProjects = projects.filter((values: any) => values._id == projectId)
         setSelected(filteredProjects[0])
+        dispatch(setCurrentProjects({ data: filteredProjects[0] }))
+        navigate('/overview')
     }
 
 
@@ -54,14 +61,14 @@ function SideBar() {
             <Sidebar aria-label="Sidebar with multi-level dropdown example" className={`h-92 mt-12 transform duration-300`} collapsed={collapse}>
                 <Sidebar.Items>
                     <Sidebar.ItemGroup>
-                        <Sidebar.Collapse  icon={FaRegFolderOpen} label="Projects">
+                        <Sidebar.Collapse icon={FaRegFolderOpen} label="Projects">
                             {userdata?.role === UserRole.projectlead && (
                                 <Sidebar.Item onClick={() => setOpenModal(true)} className={'cursor-pointer text-sm'} icon={RiAddCircleLine}>
                                     New Project
                                 </Sidebar.Item>
                             )}
                             {projects.map((project: IProjects) => (
-                                <Sidebar.Item onClick={() => handleSelectProject(project?._id)} icon={IoDocumentOutline} key={project._id} className={`${selected?._id == project?._id ? 'border border-neutral-400 shadow-slate-700 ' : ''} hover:bg-neutral-200 cursor-pointer`}>
+                                <Sidebar.Item onClick={() => handleSelectProject(project?._id)} icon={IoDocumentOutline} key={project._id} className={`${selected?._id == project?._id ? ' bg-neutral-200 ' : ''} hover:bg-neutral-200 cursor-pointer`}>
                                     {project.projectName}
                                 </Sidebar.Item>
                             ))}
@@ -83,36 +90,38 @@ function SideBar() {
                             </Sidebar.Item>
                         </NavLink>
                         <SidebarItemGroup>
-                            <NavLink to={`/Members/${selected?._id}`}>
+                            <NavLink to={`/Members/${currentProjectInfo?._id}`}>
                                 <Sidebar.Item href="#" icon={PiUsersLight} className={`${active === '/Members' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Members')} >
                                     Members
                                 </Sidebar.Item>
                             </NavLink>
-                            <Sidebar.Item href="#" icon={DiCodeBadge} className={`${active === '/API Testing' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/API Testing')} >
-                        API Testing
-                    </Sidebar.Item>
-                    <Sidebar.Item href="#" icon={TbDatabaseEdit} className={`${active === '/DB Designs' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/DB Designs')}  >
-                        DB Designs
-                    </Sidebar.Item>
-                    <Sidebar.Item href="#" icon={IoDocumentsOutline} className={`${active === '/Modules' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Modules')} >
-                        NotePad
-                    </Sidebar.Item>
-                    <Sidebar.Item href="#" icon={LuLineChart} className={`${active === '/Board' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Board')} >
-                        Board
-                    </Sidebar.Item>
-                </SidebarItemGroup>
-                <SidebarItemGroup>
-                    <Sidebar.Item href="#" icon={PiChatsCircleLight} className={`${active === '/chats' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/chats')}  >
-                        Chats
-                    </Sidebar.Item>
-                    <Sidebar.Item href="#" icon={IoVideocamOutline} className={`${active === '/Meetings' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Meetings')} >
-                        Meetings
-                    </Sidebar.Item>
-                </SidebarItemGroup>
-            </Sidebar.ItemGroup>
-        </Sidebar.Items >
+                            <NavLink to={`/Api-testing/${currentProjectInfo?._id}`}>
+                                <Sidebar.Item href="#" icon={DiCodeBadge} className={`${active === '/API Testing' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/API Testing')} >
+                                    API Testing
+                                </Sidebar.Item>
+                            </NavLink>
+                            <Sidebar.Item href="#" icon={TbDatabaseEdit} className={`${active === '/DB Designs' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/DB Designs')}  >
+                                DB Designs
+                            </Sidebar.Item>
+                            <Sidebar.Item href="#" icon={IoDocumentsOutline} className={`${active === '/Modules' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Modules')} >
+                                NotePad
+                            </Sidebar.Item>
+                            <Sidebar.Item href="#" icon={LuLineChart} className={`${active === '/Board' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Board')} >
+                                Board
+                            </Sidebar.Item>
+                        </SidebarItemGroup>
+                        <SidebarItemGroup>
+                            <Sidebar.Item href="#" icon={PiChatsCircleLight} className={`${active === '/chats' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/chats')}  >
+                                Chats
+                            </Sidebar.Item>
+                            <Sidebar.Item href="#" icon={IoVideocamOutline} className={`${active === '/Meetings' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Meetings')} >
+                                Meetings
+                            </Sidebar.Item>
+                        </SidebarItemGroup>
+                    </Sidebar.ItemGroup>
+                </Sidebar.Items >
             </Sidebar >
-        <ProjectModal setOpenModal={setOpenModal} openModal={openModal} />
+            <ProjectModal setOpenModal={setOpenModal} openModal={openModal} />
         </>
     );
 }

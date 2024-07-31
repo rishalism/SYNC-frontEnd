@@ -59,3 +59,8 @@ export const inviteMembersSchema = yup.object().shape({
         .email('Invalid email address')
         .required('Email is required'),
 })
+
+
+export const urlValidationSchema = yup.object().shape({
+    url: yup.string().url('must be a valid URL').required('URL is required')
+})

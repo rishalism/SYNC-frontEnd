@@ -6,6 +6,7 @@ export interface IProjects {
     projectOwner: string;
     description: string;
     ProjectMembers?: string[];
+    BlockedMembers?: string[];
     createdAt?: Date;
     updatedAt?: Date
 }

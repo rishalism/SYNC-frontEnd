@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import errorHandler from "@/middlewares/errorHandler";
 import { useContext, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import {
     DropdownMenu,
@@ -16,20 +16,27 @@ import { deleteProject, getProject } from "@/api/projectsApi";
 import { toast } from "sonner";
 import ProjectContext from "@/context/projectContext";
 import ProjectEditModal from "@/components/ui/ProjectEditModal";
+import { clearCurrentProjects, setCurrentProjects } from "@/redux/slices/projects";
+import ProjectMembers from "@/types/interfaces/IprojejectMembers";
+
 
 function OverViewPage() {
     const { openModal, setOpenModal, projects, setProject, selected, setSelected }: any = useContext(ProjectContext);
     const { ProjectleadInfo } = useSelector((state: RootState) => state.auth);
     const [editModal, setEditModal] = useState(false);
-
+    const dispatch = useDispatch()
     async function fetchProjectDetails() {
         try {
             const projectData: any = await getProject();
-            if (projectData?.projectData) {
+            if (projectData?.projectData.length > 0) {
                 setProject(projectData.projectData);
                 if (selected == null) {
                     setSelected(projectData.projectData[0])
+                    dispatch(setCurrentProjects({ data: projectData.projectData[0] }))
                 }
+            }
+            if (projectData.projectData.length == 0) {
+                dispatch(clearCurrentProjects())
             }
             return projectData?.projectData[0];
         } catch (error) {
@@ -79,6 +86,7 @@ function OverViewPage() {
             fetchProjectDetails();
             const filteredProjects = projects.filter((values: any) => values._id !== projectid)
             setSelected(filteredProjects[0])
+            dispatch(setCurrentProjects({ data: filteredProjects[0] }))
         }
     }
 
@@ -87,25 +95,27 @@ function OverViewPage() {
     return (
         <div className='flex flex-col w-full items-center justify-center p-40'>
             {selected ?
-                <div className="p-12 w-full border-2 shadow-md rounded-lg">
+                <div className="p-12 w-full border-2 shadow-inner rounded-lg">
                     <div className="flex flex-col w-full h-full gap-8">
                         <div className="flex justify-between">
-                            <h2 className="text-4xl font-bold">{selected?.projectName}</h2>
-                            {ProjectleadInfo?.id && <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="secondary" size="icon">
-                                        <BsThreeDotsVertical />
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                    <DropdownMenuItem onClick={() => HandleEditProject(selected?._id)}>
-                                        Edit
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => HandleDeleteProject(selected?._id)}>
-                                        Delete
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>}
+                            <div className="border-2 flex items-center justify-between p-8 rounded-md w-full">
+                                <h2 className="text-4xl font-bold">{selected?.projectName}</h2>
+                                {ProjectleadInfo?.id && <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="secondary" size="icon">
+                                            <BsThreeDotsVertical />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuItem onClick={() => HandleEditProject(selected?._id)}>
+                                            Edit
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => HandleDeleteProject(selected?._id)}>
+                                            Delete
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>}
+                            </div>
                         </div>
                         <p className="text-sm text-neutral-500">{selected?.description}</p>
                         <div className="space-y-3">
@@ -121,9 +131,12 @@ function OverViewPage() {
                         <div className="space-y-3 mb-8">
                             <h2 className="text-3xl font-bold">Team Members</h2>
                             <div className="flex relative">
-                                {selected?.ProjectMembers.map((members: string) => (
-                                    <Avatar key={members} className='w-10 absolute h-10'>
-                                        <AvatarImage src="https://github.com/shadcn.png" alt="User avatar" />
+                                {selected?.ProjectMembers.map((members: ProjectMembers, index: number) => (
+                                    <Avatar
+                                        key={members._id}
+                                        className={`w-10 h-10`}
+                                    >
+                                        <AvatarImage src={`${members.avatar || "https://github.com/shadcn.png"}`} alt="User avatar" />
                                         <AvatarFallback>CN</AvatarFallback>
                                     </Avatar>
                                 ))}

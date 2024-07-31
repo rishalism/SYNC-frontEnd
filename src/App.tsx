@@ -14,6 +14,7 @@ import ProtectedRoutes from "./middlewares/ProtectedRoutes"
 import AuthHandler from "./middlewares/AuthHandler"
 import MembersPage from "./pages/MembersPage"
 import AcceptInvitation from "./pages/authPages/AcceptInvitation"
+import ApiTestingPage from "./pages/ApiTestingPage"
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
               <Route element={<UserLayout />}>
                 <Route path="/Overview" element={<OverViewPage />}></Route>
                 <Route path="/Members/:projectId" element={<MembersPage />}></Route>
+                <Route path="/Api-testing/:projectId" element={<ApiTestingPage />}></Route>
               </Route>
             </Route>
           </Route>
