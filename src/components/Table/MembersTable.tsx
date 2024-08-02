@@ -17,7 +17,7 @@ import {
 import { columns } from "./data";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { GoPlus } from "react-icons/go";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
 import InviteModal from '../ui/InviteModal';
 import { LuLineChart } from 'react-icons/lu';
@@ -27,6 +27,21 @@ import { toast } from 'sonner';
 import { RemoveMember } from '@/api/projectsApi';
 import { useParams } from 'react-router-dom';
 import ProjectMembers from '@/types/interfaces/IprojejectMembers';
+import { setCurrentProjects } from '@/redux/slices/projects';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { AiOutlineDelete } from "react-icons/ai";
+
+
 
 const INITIAL_VISIBLE_COLUMNS = ["Permissions", "actions"];
 
@@ -42,9 +57,11 @@ function MembersTable() {
     const [openModal, setOpenModal] = useState(false);
     const { ProjectleadInfo } = useSelector((state: RootState) => state.auth);
     const { projectId } = useParams();
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setUsers(currentProjectInfo.ProjectMembers);
+        dispatch(setCurrentProjects({ data: currentProjectInfo }))
     }, [currentProjectInfo]);
 
 
@@ -71,10 +88,12 @@ function MembersTable() {
             toast.error('Select a member!');
         } else {
             const response = await RemoveMember({ userId, projectId });
+            console.log(response?.data);
             if (response) {
-                setUsers(users.filter((user) => user._id !== userId));
-                toast.success('Member removed!');
+                setUsers(response.data.ProjectMembers)
+
             }
+            toast.success('Member removed!');
         }
     }
 
@@ -198,16 +217,23 @@ function MembersTable() {
                 );
             case "actions":
                 return (
-                    <div className="relative flex justify-end items-center gap-2">
+                    <div className="relative flex justify-center items-center gap-2">
                         {ProjectleadInfo &&
-                            <Dropdown>
-                                <DropdownTrigger>
-                                    <Button isIconOnly size="md" variant="light"><BsThreeDotsVertical /></Button>
-                                </DropdownTrigger>
-                                <DropdownMenu>
-                                    <DropdownItem onClick={() => handleRemove(user._id)}>Remove</DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
+                            <AlertDialog>
+                                <AlertDialogTrigger><AiOutlineDelete /></AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            You want to remove {user.name} . This action cannot be undone.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction onClick={() => handleRemove(user._id)} >Continue</AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
                         }
                     </div>
                 );

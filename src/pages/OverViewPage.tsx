@@ -18,6 +18,17 @@ import ProjectContext from "@/context/projectContext";
 import ProjectEditModal from "@/components/ui/ProjectEditModal";
 import { clearCurrentProjects, setCurrentProjects } from "@/redux/slices/projects";
 import ProjectMembers from "@/types/interfaces/IprojejectMembers";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 
 function OverViewPage() {
@@ -52,33 +63,7 @@ function OverViewPage() {
         setEditModal(!editModal);
     }
 
-    async function HandleDeleteProject(projectid: string | undefined) {
-        toast.custom((id: any) => (
-            <div id={id} className="bg-white py-3 font-semibold shadow-md px-3 rounded-md text-red-600">
-                Deleting this project is irreversible and will permanently remove all associated data. Do you really want to proceed?
-                <div className="mt-2">
-                    <button
-                        className="bg-red-600 text-white px-2 py-2 rounded mr-2"
-                        onClick={async () => {
-                            await deleteConfimed(projectid);
-                            toast.dismiss(id); // Dismiss the toast after action
-                        }}
-                    >
-                        Delete
-                    </button>
-                    <button
-                        className="bg-gray-500 text-white px-2 py-2 rounded"
-                        onClick={() => toast.dismiss(id)} // Dismiss the toast on cancel
-                    >
-                        Cancel
-                    </button>
-                </div>
-            </div>
-        ), {
-            duration: Infinity,
-            position: 'top-center',
-        });
-    }
+
 
     async function deleteConfimed(projectid: string | undefined) {
         const response = await deleteProject(projectid);
@@ -86,11 +71,14 @@ function OverViewPage() {
             fetchProjectDetails();
             const filteredProjects = projects.filter((values: any) => values._id !== projectid)
             setSelected(filteredProjects[0])
-            dispatch(setCurrentProjects({ data: filteredProjects[0] }))
+            if (filteredProjects.length > 0) {
+                dispatch(setCurrentProjects({ data: filteredProjects[0] }))
+            } else {
+                location.reload()
+            }
         }
     }
 
-    console.log(selected);
 
     return (
         <div className='flex flex-col w-full items-center justify-center p-40'>
@@ -100,21 +88,39 @@ function OverViewPage() {
                         <div className="flex justify-between">
                             <div className="border-2 flex items-center justify-between p-8 rounded-md w-full">
                                 <h2 className="text-4xl font-bold">{selected?.projectName}</h2>
-                                {ProjectleadInfo?.id && <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button variant="secondary" size="icon">
-                                            <BsThreeDotsVertical />
-                                        </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
-                                        <DropdownMenuItem onClick={() => HandleEditProject(selected?._id)}>
-                                            Edit
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={() => HandleDeleteProject(selected?._id)}>
-                                            Delete
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>}
+                                {ProjectleadInfo?.id &&
+                                    <AlertDialog>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="secondary" size="icon">
+                                                    <BsThreeDotsVertical />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end">
+                                                <DropdownMenuItem onClick={() => HandleEditProject(selected?._id)}>
+                                                    Edit
+                                                </DropdownMenuItem>
+                                                <AlertDialogTrigger className="w-full">
+                                                    <DropdownMenuItem className="w-full" >
+                                                        Delete
+                                                    </DropdownMenuItem>
+                                                </AlertDialogTrigger>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    This action cannot be undone. This will permanently delete All your data from our servers.
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction onClick={() => deleteConfimed(selected?._id)} >Continue</AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+                                }
                             </div>
                         </div>
                         <p className="text-sm text-neutral-500">{selected?.description}</p>
@@ -144,9 +150,10 @@ function OverViewPage() {
                         </div>
                     </div>
                 </div>
-                : <EmptyProjectPage openModal={openModal} setOpenModal={setOpenModal} />}
+                : <EmptyProjectPage openModal={openModal} setOpenModal={setOpenModal} />
+            }
             <ProjectEditModal openModal={editModal} setOpenModal={setEditModal} />
-        </div>
+        </div >
     );
 }
 

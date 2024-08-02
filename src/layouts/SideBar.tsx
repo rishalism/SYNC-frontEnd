@@ -114,9 +114,11 @@ function SideBar() {
                             <Sidebar.Item href="#" icon={PiChatsCircleLight} className={`${active === '/chats' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/chats')}  >
                                 Chats
                             </Sidebar.Item>
-                            <Sidebar.Item href="#" icon={IoVideocamOutline} className={`${active === '/Meetings' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Meetings')} >
-                                Meetings
-                            </Sidebar.Item>
+                            <NavLink to={`/Meet/${currentProjectInfo?._id}`} >
+                                <Sidebar.Item href="#" icon={IoVideocamOutline} className={`${active === '/Meetings' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Meetings')} >
+                                    Meetings
+                                </Sidebar.Item>
+                            </NavLink>
                         </SidebarItemGroup>
                     </Sidebar.ItemGroup>
                 </Sidebar.Items >

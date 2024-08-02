@@ -15,6 +15,8 @@ import AuthHandler from "./middlewares/AuthHandler"
 import MembersPage from "./pages/MembersPage"
 import AcceptInvitation from "./pages/authPages/AcceptInvitation"
 import ApiTestingPage from "./pages/ApiTestingPage"
+import VideoCallPage from "./pages/VideoCallPage"
+import Meet from "./components/videocall/Meet"
 
 function App() {
 
@@ -37,7 +39,9 @@ function App() {
                 <Route path="/Overview" element={<OverViewPage />}></Route>
                 <Route path="/Members/:projectId" element={<MembersPage />}></Route>
                 <Route path="/Api-testing/:projectId" element={<ApiTestingPage />}></Route>
+                <Route path="/Meet/:projectId" element={<VideoCallPage />}></Route>
               </Route>
+              <Route path="/Meet/true" element={<Meet />} />
             </Route>
           </Route>
         </Routes>
