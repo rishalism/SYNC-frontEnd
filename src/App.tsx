@@ -17,6 +17,7 @@ import AcceptInvitation from "./pages/authPages/AcceptInvitation"
 import ApiTestingPage from "./pages/ApiTestingPage"
 import VideoCallPage from "./pages/VideoCallPage"
 import Meet from "./components/videocall/Meet"
+import DBdesignPage from "./pages/DBdesignPage"
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
                 <Route path="/Overview" element={<OverViewPage />}></Route>
                 <Route path="/Members/:projectId" element={<MembersPage />}></Route>
                 <Route path="/Api-testing/:projectId" element={<ApiTestingPage />}></Route>
+                <Route path="/Db-design/:projectId" element={<DBdesignPage />}></Route>
                 <Route path="/Meet/:projectId" element={<VideoCallPage />}></Route>
               </Route>
               <Route path="/Meet/true" element={<Meet />} />

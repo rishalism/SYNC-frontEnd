@@ -100,9 +100,11 @@ function SideBar() {
                                     API Testing
                                 </Sidebar.Item>
                             </NavLink>
-                            <Sidebar.Item href="#" icon={TbDatabaseEdit} className={`${active === '/DB Designs' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/DB Designs')}  >
-                                DB Designs
-                            </Sidebar.Item>
+                            <NavLink to={`/db-design/${currentProjectInfo?._id}`}>
+                                <Sidebar.Item href="#" icon={TbDatabaseEdit} className={`${active === '/DB Designs' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/DB Designs')}  >
+                                    DB Designs
+                                </Sidebar.Item>
+                            </NavLink>
                             <Sidebar.Item href="#" icon={IoDocumentsOutline} className={`${active === '/Modules' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Modules')} >
                                 NotePad
                             </Sidebar.Item>

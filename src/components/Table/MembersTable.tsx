@@ -88,12 +88,11 @@ function MembersTable() {
             toast.error('Select a member!');
         } else {
             const response = await RemoveMember({ userId, projectId });
-            console.log(response?.data);
             if (response) {
-                setUsers(response.data.ProjectMembers)
-
+                const filteteredUsers = users.filter((user) => user._id !== userId)
+                console.log(filteteredUsers);
+                toast.success('Member removed!');
             }
-            toast.success('Member removed!');
         }
     }
 
@@ -131,7 +130,7 @@ function MembersTable() {
                 </div>
             </div>
         );
-    }, [filterValue, visibleColumns, onRowsPerPageChange, currentProjectInfo.ProjectMembers.length, hasSearchFilter, ProjectleadInfo]);
+    }, [filterValue, visibleColumns, onRowsPerPageChange, currentProjectInfo.ProjectMembers.length, hasSearchFilter, ProjectleadInfo,]);
 
 
 

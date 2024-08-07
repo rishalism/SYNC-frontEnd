@@ -20,14 +20,14 @@ function HistoryTab({ isSaved, stateData, SaveStateData }: any) {
 
     const fetchSavedApis = async () => {
         try {
-            if (!projectId == undefined) {
+            if (projectId !== "undefined") {
                 const response = await getAllApis(projectId);
                 if (response?.data && response.data.length > 0) {
                     setSaved(response.data);
                 } else {
                     setSaved([]); // Set an empty array if no data is returned
                 }
-            }
+            } 
         } catch (error) {
             setSaved([]);
         }
