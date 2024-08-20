@@ -2,7 +2,7 @@ import EmptyProjectPage from "@/components/EmptyProjectPage";
 import { Button } from "@/components/ui/button";
 import errorHandler from "@/middlewares/errorHandler";
 import { useContext, useEffect, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarGroup } from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import {
@@ -126,25 +126,19 @@ function OverViewPage() {
                         <p className="text-sm text-neutral-500">{selected?.description}</p>
                         <div className="space-y-3">
                             <h2 className="text-3xl font-bold">Project Lead</h2>
-                            <div className="flex flex-row gap-4 text-neutral-500">
-                                <Avatar className='w-10 h-10'>
-                                    <AvatarImage src={`${selected?.projectOwner?.avatar || "https://github.com/shadcn.png"}`} alt="User avatar" />
-                                    <AvatarFallback>CN</AvatarFallback>
-                                </Avatar>
+                            <div className="flex flex-row items-center gap-4 text-neutral-500">
+                                <Avatar src={`${selected?.projectOwner?.avatar || "https://github.com/shadcn.png"}`} />
                                 <span>{selected?.projectOwner?.name}</span>
                             </div>
                         </div>
                         <div className="space-y-3 mb-8">
                             <h2 className="text-3xl font-bold">Team Members</h2>
-                            <div className="flex relative">
+                            <div className="flex ">
                                 {selected?.ProjectMembers.map((members: ProjectMembers, index: number) => (
-                                    <Avatar
-                                        key={members._id}
-                                        className={`w-10 h-10`}
-                                    >
-                                        <AvatarImage src={`${members.avatar || "https://github.com/shadcn.png"}`} alt="User avatar" />
-                                        <AvatarFallback>CN</AvatarFallback>
-                                    </Avatar>
+                                    <AvatarGroup isBordered max={3}
+                                        key={members._id}>
+                                        <Avatar src={`${members.avatar || "https://github.com/shadcn.png"}`} alt="User avatar" />
+                                    </AvatarGroup>
                                 ))}
                             </div>
                         </div>

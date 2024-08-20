@@ -13,6 +13,7 @@ import {
     DropdownItem,
     User,
     Pagination,
+    Tooltip,
 } from "@nextui-org/react";
 import { columns } from "./data";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -182,7 +183,7 @@ function MembersTable() {
                                         <Button isIconOnly size="sm" variant="light"><TbDatabaseEdit /></Button>
                                     </DropdownTrigger>
                                     <DropdownMenu disallowEmptySelection
-                                        aria-label="Table Columns"
+                                        aria-label="Table db"
                                         closeOnSelect={false}
                                         selectedKeys={''}
                                         selectionMode="single"
@@ -196,7 +197,12 @@ function MembersTable() {
                                     <DropdownTrigger>
                                         <Button isIconOnly size="sm" variant="light"><IoDocumentOutline /></Button>
                                     </DropdownTrigger>
-                                    <DropdownMenu>
+                                    <DropdownMenu
+                                        disallowEmptySelection
+                                        aria-label="Table nodepad"
+                                        closeOnSelect={false}
+                                        selectedKeys={''}
+                                        selectionMode="single">
                                         <DropdownItem>View</DropdownItem>
                                         <DropdownItem>Edit</DropdownItem>
                                     </DropdownMenu>
@@ -205,7 +211,12 @@ function MembersTable() {
                                     <DropdownTrigger>
                                         <Button isIconOnly size="sm" variant="light"><LuLineChart /></Button>
                                     </DropdownTrigger>
-                                    <DropdownMenu>
+                                    <DropdownMenu
+                                        disallowEmptySelection
+                                        aria-label="Table board"
+                                        closeOnSelect={false}
+                                        selectedKeys={''}
+                                        selectionMode="single">
                                         <DropdownItem>View</DropdownItem>
                                         <DropdownItem>Edit</DropdownItem>
                                     </DropdownMenu>

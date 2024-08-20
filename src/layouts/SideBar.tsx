@@ -85,49 +85,57 @@ function SideBar() {
                             />
                         )}
                         <NavLink to={`/overView`} >
-                            <Sidebar.Item href icon={LuFileSignature} className={`${active === '/overView' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/overView')} >
+                            <Sidebar.Item icon={LuFileSignature} className={`${active === '/overView' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/overView')}>
                                 OverView
                             </Sidebar.Item>
                         </NavLink>
-                        <SidebarItemGroup>
+                        <Sidebar.ItemGroup>
                             <NavLink to={`/Members/${currentProjectInfo?._id}`}>
-                                <Sidebar.Item href="#" icon={PiUsersLight} className={`${active === '/Members' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Members')} >
+                                <Sidebar.Item icon={PiUsersLight} className={`${active === '/Members' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Members')}>
                                     Members
                                 </Sidebar.Item>
                             </NavLink>
                             <NavLink to={`/Api-testing/${currentProjectInfo?._id}`}>
-                                <Sidebar.Item href="#" icon={DiCodeBadge} className={`${active === '/API Testing' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/API Testing')} >
+                                <Sidebar.Item icon={DiCodeBadge} className={`${active === '/API Testing' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/API Testing')}>
                                     API Testing
                                 </Sidebar.Item>
                             </NavLink>
                             <NavLink to={`/db-design/${currentProjectInfo?._id}`}>
-                                <Sidebar.Item href="#" icon={TbDatabaseEdit} className={`${active === '/DB Designs' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/DB Designs')}  >
+                                <Sidebar.Item icon={TbDatabaseEdit} className={`${active === '/DB Designs' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/DB Designs')}>
                                     DB Designs
                                 </Sidebar.Item>
                             </NavLink>
-                            <Sidebar.Item href="#" icon={IoDocumentsOutline} className={`${active === '/Modules' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Modules')} >
-                                NotePad
-                            </Sidebar.Item>
-                            <Sidebar.Item href="#" icon={LuLineChart} className={`${active === '/Board' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Board')} >
-                                Board
-                            </Sidebar.Item>
-                        </SidebarItemGroup>
-                        <SidebarItemGroup>
-                            <Sidebar.Item href="#" icon={PiChatsCircleLight} className={`${active === '/chats' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/chats')}  >
-                                Chats
-                            </Sidebar.Item>
-                            <NavLink to={`/Meet/${currentProjectInfo?._id}`} >
-                                <Sidebar.Item href="#" icon={IoVideocamOutline} className={`${active === '/Meetings' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Meetings')} >
+                            <NavLink to={`/Notepad/${currentProjectInfo?._id}`}>
+                                <Sidebar.Item icon={IoDocumentsOutline} className={`${active === '/Modules' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Modules')}>
+                                    NotePad
+                                </Sidebar.Item>
+                            </NavLink>
+                            <NavLink to={`/Board/${currentProjectInfo?._id}`}>
+                                <Sidebar.Item icon={LuLineChart} className={`${active === '/Board' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Board')}>
+                                    Board
+                                </Sidebar.Item>
+                            </NavLink>
+                        </Sidebar.ItemGroup>
+                        <Sidebar.ItemGroup>
+                            <NavLink to={`/Chats/${currentProjectInfo?._id}`}>
+                                <Sidebar.Item icon={PiChatsCircleLight} className={`${active === '/chats' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/chats')}>
+                                    Chats
+                                </Sidebar.Item>
+                            </NavLink>
+                            <NavLink to={`/Meet/${currentProjectInfo?._id}`}>
+                                <Sidebar.Item icon={IoVideocamOutline} className={`${active === '/Meetings' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Meetings')}>
                                     Meetings
                                 </Sidebar.Item>
                             </NavLink>
-                        </SidebarItemGroup>
+                        </Sidebar.ItemGroup>
                     </Sidebar.ItemGroup>
-                </Sidebar.Items >
-            </Sidebar >
+                </Sidebar.Items>
+            </Sidebar>
             <ProjectModal setOpenModal={setOpenModal} openModal={openModal} />
         </>
     );
+
+
 }
 
 export default SideBar;

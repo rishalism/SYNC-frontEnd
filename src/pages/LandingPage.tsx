@@ -12,7 +12,7 @@ function LandingPage() {
 
     return (
         <div className="h-screen w-full rounded-md relative  lg:flex-row flex flex-col px-4 gap-x-10 items-center justify-evenly lg:justify-between ">
-            <div className="w-max-2xl flex flex-col items-center lg:items-start lg:w-[50%] ">
+            <div className="max-w-2xl flex flex-col items-center lg:items-start lg:w-[50%] ">
                 <h1 className="relative z-10 text-4xl text-center lg:text-left  lg:text-7xl  bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600   font-sans font-bold">
                     Manage projects like never before
                 </h1>
@@ -23,7 +23,7 @@ function LandingPage() {
                     <Link to={'/choose-role'}><HoverBorderGradient> <span className="text-neutral-200">{user ? 'view Projects ' : "get started !"}</span></HoverBorderGradient></Link>
                 </div>
             </div>
-            <div className="mockup-phone w-full shadow-2xl z-10 lg:w-[50%]">
+            <div className="mockup-phone w-full max-w-2xl shadow-2xl z-10 lg:w-[50%]">
                 <div className="camera"></div>
                 <div className="display">
                     <div className="artboard artboard-horizontal phone-2 p-1 pb-5 "> <img className='rounded-badge w-full' src={boardpage} alt="" /></div>

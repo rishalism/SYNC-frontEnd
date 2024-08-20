@@ -18,6 +18,9 @@ import ApiTestingPage from "./pages/ApiTestingPage"
 import VideoCallPage from "./pages/VideoCallPage"
 import Meet from "./components/videocall/Meet"
 import DBdesignPage from "./pages/DBdesignPage"
+import BoardPage from "./pages/BoardPage"
+import ChatsPage from "./pages/ChatsPage"
+import NotepadPages from "./pages/NotepadPages"
 
 function App() {
 
@@ -41,6 +44,9 @@ function App() {
                 <Route path="/Members/:projectId" element={<MembersPage />}></Route>
                 <Route path="/Api-testing/:projectId" element={<ApiTestingPage />}></Route>
                 <Route path="/Db-design/:projectId" element={<DBdesignPage />}></Route>
+                <Route path="/Board/:projectId" element={<BoardPage />}></Route>
+                <Route path="/Notepad/:projectId" element={<NotepadPages />}></Route>
+                <Route path="/Chats/:projectId" element={<ChatsPage />}></Route>
                 <Route path="/Meet/:projectId" element={<VideoCallPage />}></Route>
               </Route>
               <Route path="/Meet/true" element={<Meet />} />

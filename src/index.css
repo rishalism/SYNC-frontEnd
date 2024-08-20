@@ -84,6 +84,13 @@ body {
   scrollbar-width: none;
 }
 
+.hideScrollbar {
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
   display: none;

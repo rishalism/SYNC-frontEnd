@@ -1,12 +1,21 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from '../redux/slices/auth';
 import projectReducer from '../redux/slices/projects'
+import collectionReducer from '../redux/slices/collectionSlice'
+import cardReducer from '../redux/slices/cardSlice'
+const persistedState = localStorage.getItem('collections') ? JSON.parse(localStorage.getItem('collections') || '{}') : [];
+
+
 const store = configureStore({
     reducer: {
         auth: authReducer,
-        projects: projectReducer
-    }
+        projects: projectReducer,
+        collection: collectionReducer,
+        cards: cardReducer
+    },
+    // preloadedState: persistedState,
 });
+
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

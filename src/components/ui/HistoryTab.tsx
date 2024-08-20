@@ -50,13 +50,13 @@ function HistoryTab({ isSaved, stateData, SaveStateData }: any) {
     }
 
     return (
-        <div className="w-52 h-full border-r-2 absolute left-2">
+        <div className="w-52 h-full overflow-y-auto border-r-2 absolute left-2">
             <div className="p-4 w-full border-b-1">
                 <Button className="w-full rounded-sm" size="md" endContent={<GoPlus />}>
                     New Request
                 </Button>
             </div>
-            <div className="space-y-0">
+            <div className="space-y-0 ">
                 {saved.map((item, index) => (
                     <ContextMenu key={index}> {/* Move key prop to the ContextMenu component */}
                         <ContextMenuTrigger>

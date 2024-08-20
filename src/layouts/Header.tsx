@@ -23,7 +23,7 @@ function Header(): JSX.Element {
 
     const location = useLocation()
     const path: string = location.pathname
-    const noBorderPages: string[] = ['/', '/choose-role', '/signup/Project-Lead', '/signup/Team-Member', '/login/Team-Member', '/login/Project-Lead', '/verify-otp','/api/v1/links']
+    const noBorderPages: string[] = ['/', '/choose-role', '/signup/Project-Lead', '/signup/Team-Member', '/login/Team-Member', '/login/Project-Lead', '/verify-otp', '/api/v1/links']
     const borderPages = !noBorderPages.includes(path)
     const { setTheme } = useTheme();
     const [user, setUser] = useState<UserInfo | null>();
@@ -58,26 +58,11 @@ function Header(): JSX.Element {
             {user ?
                 <div className="flex lg:space-x-3 items-center">
                     <div>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" className="outline-none" size="icon">
-                                    <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 outline-none" />
-                                    <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 outline-none" />
-                                    <span className="sr-only">Toggle theme</span>
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={() => setTheme("light")}>
-                                    Light
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setTheme("dark")}>
-                                    Dark
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setTheme("system")}>
-                                    System
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                        <Button variant="ghost" className="outline-none" size="icon">
+                            <Sun onClick={() => setTheme("dark")} className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 outline-none" />
+                            <Moon onClick={() => setTheme("light")} className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 outline-none" />
+                            <span className="sr-only">Toggle theme</span>
+                        </Button>
                     </div>
                     <div>
                         <Button variant="ghost"><IoNotificationsOutline className="w-5 h-5" /></Button>

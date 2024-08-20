@@ -49,7 +49,7 @@ export const NewProjectSchema = yup.object().shape({
     description: yup.string()
         .required('Description is required')
         .min(30, 'Description should be at least 30 characters')
-        .max(200, 'Description should not be more than 200 characters')
+        .max(400, 'Description should not be more than 200 characters')
 });
 
 
@@ -64,3 +64,25 @@ export const inviteMembersSchema = yup.object().shape({
 export const urlValidationSchema = yup.object().shape({
     url: yup.string().url('must be a valid URL').required('URL is required')
 })
+
+
+
+export const NewCollectionSchema = yup.object().shape({
+    collectionName: yup
+        .string()
+        .required("Collection name is required")
+        .max(40, "Collection name should not be more than 40 characters")
+        .min(2, "Collection name should be at least 2 characters"),
+    fields: yup.array().of(
+        yup.object().shape({
+            key: yup
+                .string()
+                .required("Field name is required")
+                .max(40, "Field name should not be more than 40 characters")
+                .min(2, "Field name should be at least 2 characters"),
+            type: yup
+                .string()
+                .required("Field type is required"),
+        })
+    ).required("At least one field is required")
+});
