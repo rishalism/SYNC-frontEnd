@@ -63,3 +63,35 @@ export async function inviteTeamMember(user: object) {
         errorHandler(error)
     }
 }
+
+
+export async function forgotPassword(details: object) {
+    try {
+        const response = await Api.post(PROJECT_LEAD_ENDPOINTS.FORGOT_PASSWORD, details)
+        return response
+    } catch (error) {
+        errorHandler(error)
+
+    }
+}
+
+
+export async function ResetPasswordOTP(deatils: object) {
+    try {
+        const response = await Api.post(PROJECT_LEAD_ENDPOINTS.RESET_PASSWORD_OTP, deatils)
+        return response
+    } catch (error) {
+        errorHandler(error)
+    }
+}
+
+export async function UpdatePassword(deatils: object) {
+    try {
+        const response = await Api.post(PROJECT_LEAD_ENDPOINTS.RESET_PASSWORD, deatils)
+        return response
+    } catch (error) {
+        errorHandler(error)
+    }
+}
+
+

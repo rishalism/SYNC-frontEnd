@@ -21,7 +21,7 @@ function InviteModal({ openModal, setOpenModal }: any) {
         onSubmit: async (values) => {
             if (values) {
                 if (projectId == "undefined") {
-                    toast.warning('please select an project', { position: 'top-center' })
+                    toast.warning('please select a project', { position: 'top-center' })
                 } else {
                     const data = {
                         projectId: projectId,

@@ -168,7 +168,7 @@ function MembersTable() {
             case "id":
                 return <p>{user._id}</p>;
             case "name":
-                return <User avatarProps={{ radius: "lg", src: user.avatar }} description={user.email} name={cellValue as string} />;
+                return <User avatarProps={{ radius: "lg", src: user.avatar || "https://github.com/shadcn.png " }} description={user.email} name={cellValue as string} />;
             case "role":
                 return <div className="flex flex-col"><p className="text-bold text-small capitalize">{cellValue as string}</p></div>;
             case "status":
@@ -189,7 +189,7 @@ function MembersTable() {
                                         selectionMode="single"
                                     // onSelectionChange={setStatusFilter}
                                     >
-                                        <DropdownItem>View</DropdownItem>
+                                        <DropdownItem>View Only</DropdownItem>
                                         <DropdownItem>Edit</DropdownItem>
                                     </DropdownMenu>
                                 </Dropdown>
@@ -203,7 +203,7 @@ function MembersTable() {
                                         closeOnSelect={false}
                                         selectedKeys={''}
                                         selectionMode="single">
-                                        <DropdownItem>View</DropdownItem>
+                                        <DropdownItem>View Only</DropdownItem>
                                         <DropdownItem>Edit</DropdownItem>
                                     </DropdownMenu>
                                 </Dropdown>
@@ -217,7 +217,7 @@ function MembersTable() {
                                         closeOnSelect={false}
                                         selectedKeys={''}
                                         selectionMode="single">
-                                        <DropdownItem>View</DropdownItem>
+                                        <DropdownItem>View Only</DropdownItem>
                                         <DropdownItem>Edit</DropdownItem>
                                     </DropdownMenu>
                                 </Dropdown>

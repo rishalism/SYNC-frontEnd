@@ -68,7 +68,7 @@ function SideBar() {
                                 </Sidebar.Item>
                             )}
                             {projects.map((project: IProjects) => (
-                                <Sidebar.Item onClick={() => handleSelectProject(project?._id)} icon={IoDocumentOutline} key={project._id} className={`${selected?._id == project?._id ? ' bg-neutral-200 ' : ''} hover:bg-neutral-200 cursor-pointer`}>
+                                <Sidebar.Item onClick={() => handleSelectProject(project?._id)} icon={IoDocumentOutline} key={project._id} className={`${selected?._id == project?._id ? 'border-2 border-gray-500 ' : ''} hover:bg-neutral-200 cursor-pointer`}>
                                     {project.projectName}
                                 </Sidebar.Item>
                             ))}

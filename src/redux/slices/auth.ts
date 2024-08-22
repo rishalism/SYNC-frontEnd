@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { clearUserInfo, saveUserInfo } from "./userData";
 
 
-interface ProjectleadInfo {
+export interface ProjectleadInfo {
     id: string;
     name: string;
     username: string;
@@ -12,7 +12,7 @@ interface ProjectleadInfo {
     avatar?: string;
 }
 
-interface TeamMemberInfo {
+export interface TeamMemberInfo {
     id: string;
     name: string;
     username: string;

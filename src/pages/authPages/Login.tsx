@@ -7,13 +7,18 @@ import { Input } from "@/components/ui/input";
 import { loginProjectlead, loginTeamMember } from "@/redux/slices/auth";
 import { loginSchema } from "@/validations/formvalidation";
 import { useFormik } from "formik";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import ForgotOtp from "./ForgotOtp";
 
 
 function Login() {
 
+    const [openModal, setOpenModal] = useState(false)
+    const [value, setValue] = useState('')
+    const [otpSented, setOtpSented] = useState(false)
+    const [email, setEmail] = useState('')
     const { role } = useParams()
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -21,6 +26,21 @@ function Login() {
         email: string;
         password: string;
     }
+
+
+
+    useEffect(() => {
+        const queyparams = new URLSearchParams(location.search)
+        const otp = queyparams?.get('otp');
+        const email = queyparams?.get('email');
+        if (otp && email) {
+            setOpenModal(true)
+            setValue(otp)
+            setOtpSented(true)
+            setEmail(email)
+        }
+    }, [])
+
 
     const { ProjectleadInfo, TeamMemberInfo } = useSelector((state: RootState) => state.auth)
     useEffect(() => {
@@ -126,10 +146,12 @@ function Login() {
                         <div className="mt-10">
                             <Button type="submit" className="w-full py-6">Login</Button>
                         </div>
-                        <p className="capitalize  text-neutral-400 text-center mt-6 text-sm"> dont have an account ? <Link to={`/signup/${role}`}><span className="underline cursor-pointer">Signup</span></Link> </p>
+                        <p onClick={() => setOpenModal(true)} className="capitalize  text-neutral-400 text-center mt-3 hover:underline cursor-pointer text-sm"> forgot password?</p>
+                        <p className="capitalize  text-neutral-400 text-center mt-3 text-sm"> dont have an account ? <Link to={`/signup/${role}`}><span className="underline cursor-pointer">Signup</span></Link> </p>
                     </form>
                 </div>
             </div>
+            <ForgotOtp openModal={openModal} setOpenModal={setOpenModal} value={value} setValue={setValue} otpSented={otpSented} setOtpSented={setOtpSented} email={email} />
         </div>
     )
 }

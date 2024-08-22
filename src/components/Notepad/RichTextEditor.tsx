@@ -12,6 +12,8 @@ import { useParams } from 'react-router-dom';
 import { CreateNewNote, UpdateNotes } from '@/api/notePadApi';
 import { ISVISIBLE, NotePadInterface } from '@/types/interfaces/Inotepad';
 import { toast } from 'sonner';
+import { SiGooglegemini } from "react-icons/si";
+import AskAiModal from '../ui/AskAiModal';
 
 
 type props = {
@@ -25,7 +27,7 @@ function RichTextEditor({ currentNote, setCurrentNote, setSaved, currentUser }: 
 
     const [text, setText] = useState("");
     const [title, setTitle] = useState("untitled");
-
+    const [openModal, setOpenModal] = useState(false)
     const createdAt = new Date();
     const updatedAt = new Date();
     const { projectId } = useParams();
@@ -78,7 +80,7 @@ function RichTextEditor({ currentNote, setCurrentNote, setSaved, currentUser }: 
     }
 
     return (
-        <div className='h-screen flex flex-col'>
+        <div className='h-screen flex relative flex-col'>
             <div className='p-2 flex-shrink-0'>
                 <div className='flex flex-row gap-1 items-center'>
                     <input
@@ -128,11 +130,13 @@ function RichTextEditor({ currentNote, setCurrentNote, setSaved, currentUser }: 
             <div className='flex-grow'>
                 <Editor
                     className='h-full overflow-hidden'
-                    style={{ minHeight: '200px', maxHeight: '550px' }}
+                    style={{ minHeight: '200px', maxHeight: '480px' }}
                     value={text}
                     onTextChange={(e: any) => setText(e.htmlValue)}
                 />
             </div>
+            <Button color='secondary' onClick={() => setOpenModal(true)} className='absolute bottom-5 right-4' isIconOnly><SiGooglegemini size={25} /></Button>
+            <AskAiModal openModal={openModal} setText={setText} setOpenModal={setOpenModal} />
         </div>
     )
 }

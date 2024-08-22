@@ -81,13 +81,13 @@ function OverViewPage() {
 
 
     return (
-        <div className='flex flex-col w-full items-center justify-center p-40'>
+        <div className='flex flex-col  w-full items-center justify-center p-4 md:p-40'>
             {selected ?
-                <div className="p-12 w-full border-2 shadow-inner rounded-lg">
+                <div className="p-5 w-full border-2 shadow-inner rounded-lg">
                     <div className="flex flex-col w-full h-full gap-8">
-                        <div className="flex justify-between">
-                            <div className="border-2 flex items-center justify-between p-8 rounded-md w-full">
-                                <h2 className="text-4xl font-bold">{selected?.projectName}</h2>
+                        <div className="flex flex-col md:flex-row justify-between">
+                            <div className="border-2 flex flex-col md:flex-row items-center justify-between p-8 rounded-md w-full">
+                                <h2 className="text-4xl font-bold mb-4 md:mb-0">{selected?.projectName}</h2>
                                 {ProjectleadInfo?.id &&
                                     <AlertDialog>
                                         <DropdownMenu>
@@ -133,7 +133,7 @@ function OverViewPage() {
                         </div>
                         <div className="space-y-3 mb-8">
                             <h2 className="text-3xl font-bold">Team Members</h2>
-                            <div className="flex ">
+                            <div className="flex flex-wrap gap-2">
                                 {selected?.ProjectMembers.map((members: ProjectMembers, index: number) => (
                                     <AvatarGroup isBordered max={3}
                                         key={members._id}>

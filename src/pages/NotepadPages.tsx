@@ -81,6 +81,7 @@ function NotepadPages() {
             const response = await DeleteNote({ id })
             if (response) {
                 setDeleted(!deleted)
+                setCurrentNote(undefined)
             }
         } else {
             toast.warning('Only the creator can delete this note.')
@@ -89,17 +90,17 @@ function NotepadPages() {
 
     return (
         <div className="w-full mt-12 flex flex-row overflow-y-hidden  overflow-x-hidden">
-            <div className="flex w-1/4  flex-col  border-r-1 overflow-y-hidden border-neutral-200">
-                <div className="p-2 w-full border-b-1 border-neutral-200 h-16">
+            <div className="flex w-1/4  flex-col   overflow-y-hidden border-neutral-200">
+                <div className="p-2 w-full  h-16">
                     <Button color="primary" onClick={createNewNote} startContent={<FaPlus />} className="w-full text-start flex justify-start gap-4 rounded-md">  New note </Button>
                 </div>
-                <div>
+                <div className='p-2 '>
                     {notes.map((note) => {
                         return (
                             <AlertDialog>
                                 <ContextMenu>
                                     <ContextMenuTrigger>
-                                        <div onClick={() => selectCurrentNotes(note._id)} className={`${note._id === currentNote?._id ? "bg-neutral-300 text-black" : ""} w-full text-neutral-500 text-sm p-3 cursor-pointer  flex-row space-x-3 z-0 border hover:scale-95 hover:shadow-lg hover:border-1 h-10 flex items-center`}>
+                                        <div onClick={() => selectCurrentNotes(note._id)} className={`${note._id === currentNote?._id ? "bg-neutral-300 text-black" : ""} w-full rounded-md text-neutral-500 text-sm p-3 cursor-pointer  flex-row space-x-3 z-0 border hover:scale-95 hover:shadow-lg hover:border-1 h-10 flex items-center`}>
                                             {note.title.slice(0, 50)}
                                         </div>
                                     </ContextMenuTrigger>

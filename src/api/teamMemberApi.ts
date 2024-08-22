@@ -54,9 +54,39 @@ export async function teamMemberGoogleSignup(user: object) {
 
 
 
-export async function AcceptProjectInvitation(data:object) {
+export async function AcceptProjectInvitation(data: object) {
     try {
-        const response = await Api.post(TEAM_MEMBER_ENDPOINTS.ACCEPT_INVITATION,data )
+        const response = await Api.post(TEAM_MEMBER_ENDPOINTS.ACCEPT_INVITATION, data)
+        return response
+    } catch (error) {
+        errorHandler(error)
+    }
+}
+
+
+
+export async function TeamMemberForgotPassword(details: object) {
+    try {
+        const response = await Api.post(TEAM_MEMBER_ENDPOINTS.FORGOT_PASSWORD, details)
+        return response
+    } catch (error) {
+        errorHandler(error)
+    }
+}
+
+
+export async function TeamMemberSendResetPasswordOtp(details: object) {
+    try {
+        const response = await Api.post(TEAM_MEMBER_ENDPOINTS.RESET_PASSWORD_OTP, details)
+        return response
+    } catch (error) {
+        errorHandler(error)
+    }
+}
+
+export async function TeamMemberResetPassword(details: object) {
+    try {
+        const response = await Api.post(TEAM_MEMBER_ENDPOINTS.RESET_PASSWORD, details)
         return response
     } catch (error) {
         errorHandler(error)
