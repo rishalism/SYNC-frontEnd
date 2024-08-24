@@ -26,7 +26,6 @@ import { setCollection } from "@/redux/slices/collectionSlice";
 function DBdesignPage() {
 
     const collections = useSelector((state: RootState) => state.collection);
-    console.log(collections);
     const [openModal, setOpenModal] = useState(false);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [nodes, setNodes, onNodesChange] = useNodesState(collections);
@@ -56,9 +55,6 @@ function DBdesignPage() {
         dispatch(setCollection(newNode))
         setOpenModal(false);
     };
-
-    console.log(nodes);
-
 
     const onConnect = useCallback(
         (connection: Connection) => {

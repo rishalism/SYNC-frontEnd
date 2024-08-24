@@ -23,7 +23,7 @@ function Header(): JSX.Element {
 
     const location = useLocation()
     const path: string = location.pathname
-    const noBorderPages: string[] = ['/', '/choose-role', '/signup/Project-Lead', '/signup/Team-Member', '/login/Team-Member', '/login/Project-Lead', '/verify-otp', '/api/v1/links']
+    const noBorderPages: string[] = ['/', '/choose-role', '/signup/Project-Lead', '/signup/Team-Member', '/login/Team-Member', '/login/Project-Lead', '/verify-otp', '/api/v1/links/']    
     const borderPages = !noBorderPages.includes(path)
     const { setTheme, theme } = useTheme();
     const [user, setUser] = useState<UserInfo | null>();

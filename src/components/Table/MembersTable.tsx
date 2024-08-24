@@ -13,7 +13,7 @@ import {
     DropdownItem,
     User,
     Pagination,
-    Tooltip,
+    Tooltip
 } from "@nextui-org/react";
 import { columns } from "./data";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -187,7 +187,6 @@ function MembersTable() {
                                         closeOnSelect={false}
                                         selectedKeys={''}
                                         selectionMode="single"
-                                    // onSelectionChange={setStatusFilter}
                                     >
                                         <DropdownItem>View Only</DropdownItem>
                                         <DropdownItem>Edit</DropdownItem>

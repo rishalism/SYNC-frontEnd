@@ -142,6 +142,16 @@ function NewCollectionModal({ openModal, setOpenModal, onAddCollection }: NewCol
                                                                         <SelectItem value="BOOLEAN">Boolean</SelectItem>
                                                                         <SelectItem value="ARRAY">Array</SelectItem>
                                                                         <SelectItem value="OBJECT">Object</SelectItem>
+                                                                        <SelectItem value="DATE">Date</SelectItem>
+                                                                        <SelectItem value="BINARY">Binary</SelectItem>
+                                                                        <SelectItem value="UUID">UUID</SelectItem>
+                                                                        <SelectItem value="FLOAT">Float</SelectItem>
+                                                                        <SelectItem value="DOUBLE">Double</SelectItem>
+                                                                        <SelectItem value="DECIMAL">Decimal</SelectItem>
+                                                                        <SelectItem value="TIMESTAMP">Timestamp</SelectItem>
+                                                                        <SelectItem value="JSON">JSON</SelectItem>
+                                                                        <SelectItem value="ENUM">Enum</SelectItem>
+                                                                        <SelectItem value="ID">ID</SelectItem>
                                                                     </SelectGroup>
                                                                 </SelectContent>
                                                             </Select>
