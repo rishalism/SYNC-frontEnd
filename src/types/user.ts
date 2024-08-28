@@ -4,9 +4,10 @@ export enum UserRole {
     projectlead = 'Project-Lead',
     teammember = 'Team-Member'
 }
+
 export enum accessLevel {
-    view = 1,
-    edit = 2
+    restrict = 1,
+    allow = 2
 }
 
 export enum Isblocked {

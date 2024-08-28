@@ -8,6 +8,7 @@ export interface Message {
         id: string;
         name: string;
         avatar: string | undefined;
+        url?: string
     };
     timestamp: number;
 }
@@ -17,4 +18,9 @@ export type CurrentUser = {
     name: string;
     avatar: string | undefined;
     role: UserRole
+}
+
+export interface NotificationMessage {
+    message: string;
+    time: string
 }

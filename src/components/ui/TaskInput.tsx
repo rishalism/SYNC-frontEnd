@@ -5,14 +5,14 @@ import {
     SelectGroup,
     SelectItem,
     SelectTrigger,
-    SelectValue,
 } from "@/components/ui/select"
 import { IoSendOutline } from "react-icons/io5";
 import { Button } from './button';
-import ProjectMembers from '@/types/interfaces/IprojejectMembers';
 import { accessLevel } from '@/types/user';
 import { AddTaskAndAssignMembers } from '@/api/CardApi';
 import { toast } from 'sonner';
+import socket from '@/services/socket/socketConfig';
+import { getUserInfo } from '@/redux/slices/userData';
 
 interface Props {
     teamMembers: IProjectMembers[];
@@ -48,6 +48,7 @@ const TaskInput: React.FC<Props> = ({ teamMembers, id, setTaskAdded }) => {
         setInputValue(e.target.value);
     };
 
+
     const handleMemberSelect = (memberId: string) => {
         const selectedMember = teamMembers.find(member => member._id === memberId);
         if (selectedMember && !assignedMemberIds.includes(memberId)) {
@@ -61,17 +62,29 @@ const TaskInput: React.FC<Props> = ({ teamMembers, id, setTaskAdded }) => {
 
     async function handleSubmit() {
         if (inputValue.trim() !== '') {
-            console.log(inputValue, assignedMemberIds);
-            setInputValue('')
+            const taskInput = inputValue;
+            const assignedUsers = [...assignedMemberIds];
+
+            setInputValue('');
             setAssignedMemberIds([]);
-            const response = await AddTaskAndAssignMembers({ id, inputValue, assignedMemberIds })
+
+            const response = await AddTaskAndAssignMembers({ id, inputValue: taskInput, assignedMemberIds: assignedUsers });
             if (response) {
-                setTaskAdded((isadded) => !isadded)
+                sendNotification()
+                setTaskAdded((isAdded) => !isAdded);
             }
         } else {
-            toast.warning("please enter a task to assign Member", { position: 'top-center' })
+            toast.warning("Please enter a task to assign Member", { position: 'top-center' });
         }
     }
+
+
+    function sendNotification() {
+        assignedMemberIds.forEach((userid: any) => {
+            socket.emit('send_notification',(userid))
+        })
+    }
+
 
     return (
         <div className='w-full  px-1 py-1 '>

@@ -1,10 +1,11 @@
 import { Sidebar, SidebarItem, SidebarItemGroup } from 'flowbite-react';
 import { FaRegFolderOpen } from 'react-icons/fa';
 import { LuFileSignature, LuLineChart } from 'react-icons/lu';
-import { DiCodeBadge } from 'react-icons/di';
+import { TbFileCode } from "react-icons/tb";
 import { TbDatabaseEdit } from 'react-icons/tb';
 import { IoDocumentsOutline, IoVideocamOutline } from 'react-icons/io5';
-import { PiChatsCircleLight, PiUsersLight } from 'react-icons/pi';
+import { PiChatsCircleLight } from 'react-icons/pi';
+import { LuUsers2 } from "react-icons/lu";
 import { RiAddCircleLine } from 'react-icons/ri';
 import ProjectModal from '@/components/ui/ProjectModal';
 import { useContext, useState, useEffect } from 'react';
@@ -59,8 +60,8 @@ function SideBar() {
     return (
         <>
             <Sidebar aria-label="Sidebar with multi-level dropdown example" className={`h-92 mt-12 transform duration-300`} collapsed={collapse}>
-                <Sidebar.Items>
-                    <Sidebar.ItemGroup>
+                <Sidebar.Items >
+                    <Sidebar.ItemGroup >
                         <Sidebar.Collapse icon={FaRegFolderOpen} label="Projects">
                             {userdata?.role === UserRole.projectlead && (
                                 <Sidebar.Item onClick={() => setOpenModal(true)} className={'cursor-pointer text-sm'} icon={RiAddCircleLine}>
@@ -91,12 +92,12 @@ function SideBar() {
                         </NavLink>
                         <Sidebar.ItemGroup>
                             <NavLink to={`/Members/${currentProjectInfo?._id}`}>
-                                <Sidebar.Item icon={PiUsersLight} className={`${active === '/Members' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Members')}>
+                                <Sidebar.Item icon={LuUsers2} className={`${active === '/Members' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/Members')}>
                                     Members
                                 </Sidebar.Item>
                             </NavLink>
                             <NavLink to={`/Api-testing/${currentProjectInfo?._id}`}>
-                                <Sidebar.Item icon={DiCodeBadge} className={`${active === '/API Testing' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/API Testing')}>
+                                <Sidebar.Item icon={TbFileCode} className={`${active === '/API Testing' ? 'border border-neutral-400 shadow-inner' : ''}`} onClick={() => setActive('/API Testing')}>
                                     API Testing
                                 </Sidebar.Item>
                             </NavLink>
@@ -130,6 +131,7 @@ function SideBar() {
                         </Sidebar.ItemGroup>
                     </Sidebar.ItemGroup>
                 </Sidebar.Items>
+                <span className='absolute bottom-2 capitalize   text-sm font-semibold '>{currentProjectInfo?.projectName}</span>
             </Sidebar>
             <ProjectModal setOpenModal={setOpenModal} openModal={openModal} />
         </>

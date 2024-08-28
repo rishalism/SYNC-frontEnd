@@ -6,8 +6,6 @@ import TaskInput from './TaskInput';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
 import { accessLevel } from '@/types/user';
-import { getCardDetailById } from '@/api/CardApi';
-import { ICard } from '@/types/interfaces/IBoard';
 import { Spinner } from "@nextui-org/spinner";
 import TaskItem from './TaskItem';
 import useCardDetails from '@/customHook/CardCustomHooks';
@@ -47,8 +45,6 @@ function CardDetailsModal({ openModal, setOpenModal, id, title }: CardDetailsMod
     const { cardDetail, isLoading } = useCardDetails(id, openModal, taskAdded, taskDeleted);
 
     useEffect(() => {
-        console.log('trigger useEffect');
-
         setTeamMembers(currentProjectInfo.ProjectMembers);
     }, [openModal, taskAdded, id, cardDetail, taskDeleted]);
 

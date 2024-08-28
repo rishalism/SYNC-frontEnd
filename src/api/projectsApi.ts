@@ -1,6 +1,7 @@
 import errorHandler from "@/middlewares/errorHandler";
 import Api from "@/services/axiosconfig";
 import { PROJECTS_ENDPOINTS } from "@/services/endpoints/projectsEndpoints";
+import { accessLevel } from "@/types/user";
 
 
 export async function createProject(projectdetails: object) {
@@ -23,6 +24,19 @@ export async function getProject() {
         errorHandler(error)
     }
 }
+
+
+export async function getCurrentProject(projectId: string | undefined) {
+    try {
+
+        const currentProjectData = await Api.get(`${PROJECTS_ENDPOINTS.GET_CURRENT_PROJECT}/${projectId}`)
+        return currentProjectData
+    } catch (error) {
+        errorHandler(error)
+    }
+}
+
+
 
 export async function editProject(projectId: string, projectData: object) {
     try {
@@ -61,6 +75,16 @@ export async function addMemberIntoProject(user: object) {
 export async function RemoveMember(user: object) {
     try {
         const response = await Api.post(PROJECTS_ENDPOINTS.REMOVE_MEMBER, user)
+        return response
+    } catch (error) {
+        errorHandler(error)
+    }
+}
+
+
+export async function UpdatePermission(projectId: string | undefined, userId: string | undefined, permissionType: string, access: accessLevel) {
+    try {
+        const response = await Api.patch(PROJECTS_ENDPOINTS.UPDATE_PERMISSIONS, { projectId, userId, permissionType, access })
         return response
     } catch (error) {
         errorHandler(error)

@@ -31,7 +31,12 @@ export interface ColumnProps {
     title: string;
     column: string;
     headingColor: string;
-    Icon: IconType
+    Icon: IconType;
+    setNewCardAdded: React.Dispatch<React.SetStateAction<boolean>>;
+    setCardDeleted: React.Dispatch<React.SetStateAction<boolean>>;
+    setUpdated: React.Dispatch<React.SetStateAction<boolean>>;
+    updated: boolean
+
 }
 
 export interface CardProps extends ICard {

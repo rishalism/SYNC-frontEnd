@@ -26,6 +26,8 @@ import {
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
 import { toast } from 'sonner';
+import useNotepadpermission from '@/customHook/NotepadPermissionCheck';
+import BlockPage from './errorPage/BlockPage';
 
 
 function NotepadPages() {
@@ -65,8 +67,13 @@ function NotepadPages() {
     }, [])
 
     const createNewNote = () => {
-        setCurrentNote(undefined);
-        setNotEmpty(true)
+        if (projectId !== 'undefined') {
+            setCurrentNote(undefined);
+            setNotEmpty(true)
+        } else {
+            toast.warning('please select a project to create a note')
+        }
+
     };
 
     useEffect(() => {
@@ -86,7 +93,14 @@ function NotepadPages() {
         } else {
             toast.warning('Only the creator can delete this note.')
         }
-    } 2
+    }
+
+
+    const { isBlocked } = useNotepadpermission()
+
+    if (isBlocked) {
+        return <BlockPage />
+    }
 
     return (
         <div className="w-full mt-12 flex flex-row overflow-y-hidden  overflow-x-hidden">

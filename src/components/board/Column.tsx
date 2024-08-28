@@ -13,12 +13,9 @@ import { Spinner } from '@nextui-org/react';
 import Lottie from "lottie-react";
 import completeAnimation from '../../assets/animations/completedAnimation.json'
 
-const Column: React.FC<ColumnProps> = ({ title, headingColor, column, Icon }) => {
+const Column: React.FC<ColumnProps> = ({ title, headingColor, column, Icon, setCardDeleted, setNewCardAdded, setUpdated, updated }) => {
 
     const [active, setActive] = useState(false);
-    const [updated, setUpdated] = useState(false)
-    const [newCardAdded, setNewCardAdded] = useState(false)
-    const [isDeleted, setCardDeleted] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [isCompleted, setIscompleted] = useState(false)
     const cards = useSelector((state: RootState) => state.cards)
@@ -26,16 +23,8 @@ const Column: React.FC<ColumnProps> = ({ title, headingColor, column, Icon }) =>
     const { projectId } = useParams()
 
 
-    async function fetchCards() {
-        if (projectId !== "undefined") {
-            const response = await GetCards(projectId)
-            dispatch(setCards(response?.data))
-        }
-    }
 
-    useEffect(() => {
-        fetchCards()
-    }, [updated, newCardAdded, isDeleted])
+
 
 
     const handleDragStart = useCallback((e: React.DragEvent, card: ICard) => {

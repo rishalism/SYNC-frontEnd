@@ -42,13 +42,13 @@ function RolePage() {
                 </div>
                 <div className="space-y-2 mt-3">
                     <RadioGroup defaultValue="option-one">
-                        <div className={`${role == 'Project-Lead' ? 'outline-dotted' : 'outline-none'} w-full flex justify-between rounded-lg p-7 border-2 `}>
+                        <div onClick={() => handleSelectRole(UserRole.projectlead)} className={`${role == 'Project-Lead' ? 'outline-dotted' : 'outline-none'} w-full flex justify-between rounded-lg p-7 border-2 `}>
                             <h1 className="font-bold">project Manager</h1>
-                            <RadioGroupItem onClick={() => handleSelectRole(UserRole.projectlead)} value="option-one" id="option-one" />
+                            <RadioGroupItem value="option-one" id="option-one" />
                         </div>
-                        <div className={`${role == 'Team-Member' ? 'outline-dotted' : 'outline-none'} w-full flex justify-between rounded-lg p-7 border-2 `}>
+                        <div onClick={() => handleSelectRole(UserRole.teammember)} className={`${role == 'Team-Member' ? 'outline-dotted' : 'outline-none'} w-full flex justify-between rounded-lg p-7 border-2 `}>
                             <h1 className="font-bold">Team Member</h1>
-                            <RadioGroupItem onClick={() => handleSelectRole(UserRole.teammember)} value="option-two" id="option-two" />
+                            <RadioGroupItem value="option-two" id="option-two" />
                         </div>
                     </RadioGroup>
                 </div>

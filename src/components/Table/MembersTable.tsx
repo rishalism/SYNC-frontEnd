@@ -7,25 +7,17 @@ import {
     TableRow,
     TableCell,
     Button,
-    DropdownTrigger,
-    Dropdown,
-    DropdownMenu,
-    DropdownItem,
     User,
     Pagination,
-    Tooltip
+
 } from "@nextui-org/react";
 import { columns } from "./data";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { GoPlus } from "react-icons/go";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
 import InviteModal from '../ui/InviteModal';
-import { LuLineChart } from 'react-icons/lu';
-import { IoDocumentOutline } from "react-icons/io5";
-import { TbDatabaseEdit } from 'react-icons/tb';
 import { toast } from 'sonner';
-import { RemoveMember } from '@/api/projectsApi';
+import { getCurrentProject, RemoveMember, UpdatePermission } from '@/api/projectsApi';
 import { useParams } from 'react-router-dom';
 import ProjectMembers from '@/types/interfaces/IprojejectMembers';
 import { setCurrentProjects } from '@/redux/slices/projects';
@@ -41,15 +33,9 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { AiOutlineDelete } from "react-icons/ai";
-
-
-
-const INITIAL_VISIBLE_COLUMNS = ["Permissions", "actions"];
+import { accessLevel } from '@/types/user';
 
 function MembersTable() {
-    const [filterValue, setFilterValue] = useState("");
-    const [selectedKeys, setSelectedKeys] = useState(new Set<string>());
-    const [visibleColumns, setVisibleColumns] = useState(new Set<string>(INITIAL_VISIBLE_COLUMNS));
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [page, setPage] = useState(1);
     const { currentProjectInfo } = useSelector((state: RootState) => state.projects);
@@ -61,10 +47,18 @@ function MembersTable() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        setUsers(currentProjectInfo.ProjectMembers);
-        dispatch(setCurrentProjects({ data: currentProjectInfo }))
-    }, [currentProjectInfo]);
+        fetchCurrentProjectMembers()
+    }, [currentProjectInfo, projectId]);
 
+    async function fetchCurrentProjectMembers() {
+        if (projectId !== 'undefined') {
+            const response = await getCurrentProject(projectId)
+            if (response?.data) {
+                setUsers(response.data.ProjectMembers)
+                dispatch(setCurrentProjects({ data: response.data }))
+            }
+        }
+    }
 
     useEffect(() => {
         const startIdx = (page - 1) * rowsPerPage;
@@ -72,13 +66,12 @@ function MembersTable() {
         setPaginatedUsers(users.slice(startIdx, endIdx));
     }, [users, page, rowsPerPage]);
 
-    const hasSearchFilter = Boolean(filterValue);
 
 
     const headerColumns = useMemo(() => {
         if (ProjectleadInfo) return columns;
-        return columns.filter((column) => column.uid !== 'Permissions' && column.uid !== 'actions');
-    }, [visibleColumns, ProjectleadInfo]);
+        return columns.filter((column) => column.uid !== 'dbdesign' && column.uid !== 'actions' && column.uid !== 'notepad' && column.uid !== 'board');
+    }, [ProjectleadInfo]);
 
 
 
@@ -91,7 +84,9 @@ function MembersTable() {
             const response = await RemoveMember({ userId, projectId });
             if (response) {
                 const filteteredUsers = users.filter((user) => user._id !== userId)
-                console.log(filteteredUsers);
+                const data = await getCurrentProject(projectId)
+                console.log(data?.data);
+                dispatch(setCurrentProjects(data?.data))
                 toast.success('Member removed!');
             }
         }
@@ -131,7 +126,7 @@ function MembersTable() {
                 </div>
             </div>
         );
-    }, [filterValue, visibleColumns, onRowsPerPageChange, currentProjectInfo.ProjectMembers.length, hasSearchFilter, ProjectleadInfo,]);
+    }, [onRowsPerPageChange, currentProjectInfo.ProjectMembers.length, ProjectleadInfo,]);
 
 
 
@@ -141,7 +136,6 @@ function MembersTable() {
         return (
             <div className="py-2 px-2 flex justify-between items-center">
                 <span className="w-[30%] text-small text-default-400">
-                    {selectedKeys.size ? "All items selected" : ''}
                 </span>
                 <Pagination
                     isCompact
@@ -158,69 +152,72 @@ function MembersTable() {
                 </div>
             </div>
         );
-    }, [page, pages, selectedKeys, currentProjectInfo.ProjectMembers.length, onNextPage, onPreviousPage]);
+    }, [page, pages, , currentProjectInfo.ProjectMembers.length, onNextPage, onPreviousPage]);
+
+
+
+    async function updateDBPermissions(user: ProjectMembers) {
+        const newPermission = user.permissions?.dbDesign === accessLevel.allow ? accessLevel.restrict : accessLevel.allow;
+        const response = await UpdatePermission(projectId, user._id, 'dbDesign', newPermission);
+        if (response) {
+            fetchCurrentProjectMembers(); // Refresh members after update
+        }
+    }
+
+    async function updateNotepadPermissions(user: ProjectMembers) {
+        const newPermission = user.permissions?.notepad === accessLevel.allow ? accessLevel.restrict : accessLevel.allow;
+        const response = await UpdatePermission(projectId, user._id, 'notepad', newPermission);
+        if (response) {
+            fetchCurrentProjectMembers(); // Refresh members after update
+        }
+    }
+
+    async function updateBoardPermission(user: ProjectMembers) {
+        const newPermission = user.permissions?.board === accessLevel.allow ? accessLevel.restrict : accessLevel.allow;
+        const response = await UpdatePermission(projectId, user._id, 'board', newPermission);
+        if (response) {
+            fetchCurrentProjectMembers(); // Refresh members after update
+        }
+    }
 
 
 
     const renderCell = useCallback((user: ProjectMembers, columnKey: string) => {
         const cellValue = user[columnKey as keyof ProjectMembers];
         switch (columnKey) {
-            case "id":
-                return <p>{user._id}</p>;
             case "name":
                 return <User avatarProps={{ radius: "lg", src: user.avatar || "https://github.com/shadcn.png " }} description={user.email} name={cellValue as string} />;
             case "role":
                 return <div className="flex flex-col"><p className="text-bold text-small capitalize">{cellValue as string}</p></div>;
             case "status":
                 return <div className="flex flex-col"><p className="text-bold text-small capitalize">{cellValue as string}</p></div>;
-            case "Permissions":
+            case "dbdesign":
                 return (
-                    <div className="flex ">
+                    <div className="flex items-center justify-center cursor-pointer">
                         {ProjectleadInfo &&
-                            <>
-                                <Dropdown>
-                                    <DropdownTrigger>
-                                        <Button isIconOnly size="sm" variant="light"><TbDatabaseEdit /></Button>
-                                    </DropdownTrigger>
-                                    <DropdownMenu disallowEmptySelection
-                                        aria-label="Table db"
-                                        closeOnSelect={false}
-                                        selectedKeys={''}
-                                        selectionMode="single"
-                                    >
-                                        <DropdownItem>View Only</DropdownItem>
-                                        <DropdownItem>Edit</DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
-                                <Dropdown>
-                                    <DropdownTrigger>
-                                        <Button isIconOnly size="sm" variant="light"><IoDocumentOutline /></Button>
-                                    </DropdownTrigger>
-                                    <DropdownMenu
-                                        disallowEmptySelection
-                                        aria-label="Table nodepad"
-                                        closeOnSelect={false}
-                                        selectedKeys={''}
-                                        selectionMode="single">
-                                        <DropdownItem>View Only</DropdownItem>
-                                        <DropdownItem>Edit</DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
-                                <Dropdown>
-                                    <DropdownTrigger>
-                                        <Button isIconOnly size="sm" variant="light"><LuLineChart /></Button>
-                                    </DropdownTrigger>
-                                    <DropdownMenu
-                                        disallowEmptySelection
-                                        aria-label="Table board"
-                                        closeOnSelect={false}
-                                        selectedKeys={''}
-                                        selectionMode="single">
-                                        <DropdownItem>View Only</DropdownItem>
-                                        <DropdownItem>Edit</DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
-                            </>
+                            <div onClick={() => updateDBPermissions(user)}>
+                                {user.permissions?.dbDesign === accessLevel.allow ? <div>Allowed ✅</div> : <div>Restricted 🚫</div>}
+                            </div>
+                        }
+                    </div>
+                );
+            case "notepad":
+                return (
+                    <div className="flex items-center justify-center cursor-pointer">
+                        {ProjectleadInfo &&
+                            <div onClick={() => updateNotepadPermissions(user)}>
+                                {user.permissions?.notepad === accessLevel.allow ? <div>Allowed ✅</div> : <div>Restricted 🚫</div>}
+                            </div>
+                        }
+                    </div>
+                );
+            case "board":
+                return (
+                    <div className="flex items-center justify-center cursor-pointer">
+                        {ProjectleadInfo &&
+                            <div onClick={() => updateBoardPermission(user)}>
+                                {user.permissions?.board === accessLevel.allow ? <div>Allowed ✅</div> : <div>Restricted 🚫</div>}
+                            </div>
                         }
                     </div>
                 );
@@ -249,7 +246,7 @@ function MembersTable() {
             default:
                 return typeof cellValue === 'string' || typeof cellValue === 'number' ? cellValue : '';
         }
-    }, [ProjectleadInfo, handleRemove]);
+    }, [ProjectleadInfo, handleRemove, updateDBPermissions, updateNotepadPermissions, updateBoardPermission]);
 
 
 

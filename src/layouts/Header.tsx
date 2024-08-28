@@ -17,16 +17,19 @@ import { logoutProjectLead, logoutTeamMember } from "@/redux/slices/auth";
 import { RootState } from "@/app/store";
 import { getUserInfo, UserInfo } from "@/redux/slices/userData";
 import { UserRole } from "@/types/user";
+import NotificationModal from "@/components/ui/NotificationModal";
 
 
 function Header(): JSX.Element {
 
     const location = useLocation()
     const path: string = location.pathname
-    const noBorderPages: string[] = ['/', '/choose-role', '/signup/Project-Lead', '/signup/Team-Member', '/login/Team-Member', '/login/Project-Lead', '/verify-otp', '/api/v1/links/']    
+    const noBorderPages: string[] = ['/', '/choose-role', '/signup/Project-Lead', '/signup/Team-Member', '/login/Team-Member', '/login/Project-Lead', '/verify-otp', '/api/v1/links/']
     const borderPages = !noBorderPages.includes(path)
     const { setTheme, theme } = useTheme();
     const [user, setUser] = useState<UserInfo | null>();
+    const [openModal, setOpenModal] = useState<boolean>(false)
+    const [notificationCount, setNotificationCount] = useState(0)
     const userdetails = getUserInfo()
     const dispatch = useDispatch()
 
@@ -48,7 +51,6 @@ function Header(): JSX.Element {
         dispatch(logoutTeamMember())
     }
 
-
     return (
         <>
             {
@@ -67,7 +69,7 @@ function Header(): JSX.Element {
                                 </Button>
                             </div>
                             <div>
-                                <Button variant="ghost"><IoNotificationsOutline className="w-5 h-5" /></Button>
+                                <Button onClick={() => setOpenModal(true)} variant="ghost"><IoNotificationsOutline className="w-5 h-5" /></Button>
                             </div>
                             <div>
                                 <DropdownMenu>
@@ -107,8 +109,15 @@ function Header(): JSX.Element {
                                 <span className="sr-only">Toggle theme</span>
                             </Button>
                         </div>
-                        <div>
-                            <Button variant="ghost"><IoNotificationsOutline className="w-5 h-5" /></Button>
+                        <div className="relative">
+                            <Button onClick={() => setOpenModal(true)} variant="ghost" className="relative">
+                                <IoNotificationsOutline className="w-5 h-5" />
+                                {notificationCount > 0 && (
+                                    <span style={{ fontSize: '10px' }} className={`absolute w-3 px-2 top-1 right-3 flex items-center justify-center  text-xs font-bold  ${theme == 'light' ? "bg-black text-white" : "text-black bg-white"} rounded-full`}>
+                                        {notificationCount > 99 ? '99+' : notificationCount}
+                                    </span>
+                                )}
+                            </Button>
                         </div>
                         <div>
                             <DropdownMenu>
@@ -133,6 +142,7 @@ function Header(): JSX.Element {
 
                 }
             </div>
+            <NotificationModal openModal={openModal} setNotificationCount={setNotificationCount} setOpenModal={setOpenModal} />
         </>
     );
 }

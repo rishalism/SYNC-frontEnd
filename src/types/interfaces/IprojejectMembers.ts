@@ -10,10 +10,10 @@ export interface ProjectMembers {
     password: string;
     role: string;
     avatar?: string;
-    isGoogle: boolean;
-    permissions: {
+    isGoogle?: boolean;
+    permissions?: {
         dbDesign: accessLevel;
-        modules: accessLevel;
+        notepad: accessLevel;
         board: accessLevel;
     };
     created_at?: Date;

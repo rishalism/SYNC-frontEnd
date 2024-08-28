@@ -21,6 +21,7 @@ import DBdesignPage from "./pages/DBdesignPage"
 import BoardPage from "./pages/BoardPage"
 import ChatsPage from "./pages/ChatsPage"
 import NotepadPages from "./pages/NotepadPages"
+import Notfound from "./pages/errorPage/Notfound"
 
 function App() {
 
@@ -50,6 +51,7 @@ function App() {
                 <Route path="/Meet/:projectId" element={<VideoCallPage />}></Route>
               </Route>
               <Route path="/Meet/true" element={<Meet />} />
+              <Route path="*" element={<Notfound />} />
             </Route>
           </Route>
         </Routes>

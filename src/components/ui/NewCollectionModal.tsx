@@ -11,11 +11,9 @@ import {
 } from "@/components/ui/select"
 import { Input } from "./input";
 import { GoPlus, GoTrash } from "react-icons/go";
-import { useState } from "react";
 import { useFormik, FieldArray, FormikProvider } from "formik";
 import { NewCollectionSchema } from "@/validations/formvalidation";
 import { CollectionState, NewCollectionModalProps } from "@/types/interfaces/IdbDesign";
-import { Node } from "@xyflow/react";
 
 interface Field {
     key: string;
@@ -27,19 +25,8 @@ interface FormValues {
     fields: Field[];
 }
 
-interface FormikErrors {
-    collectionName?: string;
-    fields?: Array<{ key?: string; type?: string } | string>;
-}
-
-interface FormikTouched {
-    collectionName?: boolean;
-    fields?: Array<{ key?: boolean; type?: boolean }>;
-}
-
 function NewCollectionModal({ openModal, setOpenModal, onAddCollection }: NewCollectionModalProps) {
 
-    // const [fields, setFields] = useState([{ key: '', type: 'STRING' }]);
 
     // form vaidations 
     const initialValues: FormValues = {
@@ -58,9 +45,10 @@ function NewCollectionModal({ openModal, setOpenModal, onAddCollection }: NewCol
 
             onAddCollection(collectionData);
             setOpenModal(false);
+            values.collectionName = ''
+            values.fields = [{ key: '', type: 'STRING' }]
         },
     });
-
 
     const {
         values,
@@ -71,7 +59,6 @@ function NewCollectionModal({ openModal, setOpenModal, onAddCollection }: NewCol
         handleSubmit,
         setFieldValue,
     } = formik;
-
 
     return (
         <>

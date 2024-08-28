@@ -4,12 +4,14 @@ import socket from "@/services/socket/socketConfig";
 import { CurrentUser, Message } from "@/types/interfaces/Ichats";
 import ProjectMembers from "@/types/interfaces/IprojejectMembers";
 import { UserRole } from "@/types/user";
-import { Avatar, AvatarGroup, Button } from "@nextui-org/react"
+import { Avatar, AvatarGroup, Button, Spinner } from "@nextui-org/react"
 import { useEffect, useRef, useState } from "react";
 import { IoSendOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import InputEmoji from 'react-input-emoji'
+
 
 
 function ChatsPage() {
@@ -21,11 +23,13 @@ function ChatsPage() {
     const { projectId } = useParams();
     const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
     const chatContainerRef = useRef<HTMLDivElement>(null);
+    const [isloading, setIsloading] = useState(false)
 
 
     useEffect(() => {
         if (currentProjectInfo) {
             setMembers(currentProjectInfo.ProjectMembers);
+            setMembers((prev) => [...prev, currentProjectInfo.projectOwner])
         }
 
         if (ProjectleadInfo) {
@@ -51,17 +55,24 @@ function ChatsPage() {
 
     async function fetchChats() {
         try {
-            const response = await GetChats(projectId);
-            setMessages(response?.data.messages || []);
+            if (projectId !== 'undefined') {
+                setIsloading(true)
+                const response = await GetChats(projectId);
+                if (response) {
+                    setMessages(response?.data.messages || []);
+                    setIsloading(false)
+                }
+            }
         } catch (error) {
             console.error('Error fetching chats:', error);
+        } finally {
+            setIsloading(false)
         }
     }
 
 
     useEffect(() => {
         if (projectId) {
-            socket.emit('join_room', projectId);
             fetchChats();
         }
         socket.on('receive_message', (message: Message) => {
@@ -72,47 +83,38 @@ function ChatsPage() {
                 return prevMessages;
             });
         });
-        return () => {
-            socket.off('receive_message');
-            if (projectId) {
-                socket.emit('leave_room', projectId);
-            }
-        };
+
     }, [projectId]);
 
 
     async function sendMessage() {
-        if (projectId == 'undefined'){
+        if (projectId == 'undefined') {
             toast.warning('please select a project to start chating')
             return;
         }
-            if (inputMessage.trim() && projectId && currentUser) {
-                const newMessage: Message = {
-                    projectId: projectId,
-                    id: Date.now().toString(),
-                    text: inputMessage,
-                    sender: {
-                        id: currentUser.id,
-                        name: currentUser.name,
-                        avatar: currentUser.avatar
-                    },
-                    timestamp: Date.now()
-                };
-                socket.emit('send_message', {
-                    message: newMessage,
-                    room: projectId
-                });
-                setMessages(prevMessages => [...prevMessages, newMessage]);
-                setInputMessage('');
-                await SaveChats(newMessage)
-            }
-    }
-
-    function handleKeydown(event: any) {
-        if (event.key == 'Enter') {
-            sendMessage()
+        if (inputMessage.trim() && projectId && currentUser) {
+            const newMessage: Message = {
+                projectId: projectId,
+                id: Date.now().toString(),
+                text: inputMessage,
+                sender: {
+                    id: currentUser.id,
+                    name: currentUser.name,
+                    avatar: currentUser.avatar
+                },
+                timestamp: Date.now()
+            };
+            socket.emit('send_message', {
+                message: newMessage,
+                room: projectId
+            });
+            setMessages(prevMessages => [...prevMessages, newMessage]);
+            setInputMessage('');
+            await SaveChats(newMessage)
         }
     }
+
+
 
     return (
         <div className="w-full mt-12 flex flex-col md:flex-row items-center px-4 md:px-20 py-5 rounded-xl gap-5 justify-center">
@@ -128,26 +130,48 @@ function ChatsPage() {
                     </div>
                 </div>
                 <div ref={chatContainerRef} className="w-full h-[calc(100vh-300px)] md:h-[calc(100vh-200px)] overflow-y-auto overflow-x-hidden p-4 hideScrollbar space-y-4">
-                    {messages?.map((msg) => (
-                        <div key={msg.id} className={`chat ${msg.sender.id === currentUser?.id ? 'chat-end' : 'chat-start'}`}>
-                            <div className="chat-image avatar">
-                                <div className="rounded-full">
-                                    <Avatar src={msg.sender.avatar || "https://github.com/shadcn.png"} className="m-2" />
-                                </div>
-                            </div>
-                            <div className="chat-header">
-                                <p className="text-sm font-semibold">{msg.sender.name}</p>
-                            </div>
-                            <div className="chat-bubble">
-                                <p>{msg.text}</p>
-                                <time className="text-xs opacity-50">{new Date(msg.timestamp).toLocaleTimeString()}</time>
-                            </div>
-                        </div>
-                    ))}
+                    {
+                        isloading ?
+                            <div className="w-full h-full flex items-center justify-center">
+                                <Spinner />
+                            </div> :
+                            <>
+                                {messages?.map((msg) => (
+                                    <div key={msg.id} className={`chat ${msg.sender.id === currentUser?.id ? 'chat-end' : 'chat-start'}`}>
+                                        <div className="chat-image avatar">
+                                            <div className="rounded-full">
+                                                <Avatar src={msg.sender.avatar || "https://github.com/shadcn.png"} className="m-2" />
+                                            </div>
+                                        </div>
+                                        <div className="chat-header">
+                                            <p className="text-sm font-semibold">{msg.sender.name}</p>
+                                        </div>
+                                        <div className="chat-bubble">
+                                            {msg.sender.url ? <Link to={msg.sender.url}><p>{msg.text} . click to join !</p></Link> : <p>{msg.text}</p>}
+                                            <time className="text-xs opacity-50">{new Date(msg.timestamp).toLocaleTimeString()}</time>
+                                        </div>
+                                    </div>
+                                ))}
+                            </>
+                    }
                 </div>
                 <div className="w-full flex flex-row absolute bottom-0 max-h-10">
-                    <input value={inputMessage} onKeyDown={handleKeydown} onChange={(e) => setInputMessage(e.target.value)} className="w-full text-black border-neutral-300 rounded-bl-lg h-10" type="text" placeholder="start typing..." />
-                    <Button onClick={sendMessage} color="primary" className="rounded-none rounded-br-lg rounded-tr-lg h-10"><IoSendOutline /></Button>
+                    <InputEmoji
+                        value={inputMessage}
+                        onChange={setInputMessage}
+                        cleanOnEnter
+                        placeholder="Type a message"
+                        onEnter={sendMessage}
+                        shouldReturn={true}
+                        shouldConvertEmojiToImage={false}
+                    />
+                    <Button
+                        onClick={sendMessage}
+                        color="primary"
+                        className="rounded-none rounded-br-lg rounded-tr-lg h-10"
+                    >
+                        <IoSendOutline />
+                    </Button>
                 </div>
             </div>
         </div>

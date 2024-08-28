@@ -1,17 +1,12 @@
 const columns = [
-    { name: "ID", uid: "id", sortable: true },
     { name: "NAME", uid: "name", sortable: true },
     { name: "USERNAME", uid: "userName", sortable: true },
     { name: "ROLE", uid: "role" },
-    { name: "PERMISSIONS", uid: "Permissions" },
+    { name: "DBDESIGN", uid: "dbdesign" },
+    { name: "NOTEPAD", uid: "notepad" },
+    { name: "BOARD", uid: "board" },
     { name: "ACTIONS", uid: "actions" },
 ];
 
-const statusOptions = [
-    { name: "Pending", uid: "penfing" },
-    { name: "Accepted", uid: "Accepted" },
-];
 
-
-
-export { columns, statusOptions };
+export { columns };

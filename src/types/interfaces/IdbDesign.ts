@@ -10,24 +10,7 @@ export interface CollectionState extends Record<string, unknown> {
     fields: Field[];
 }
 
-export const initialNodes: Node<{ data: CollectionState }>[] = [
-    // {
-    //     id: '1',
-    //     type: 'dbCollection',
-    //     position: { x: 100, y: 100 },
-    //     data: {
-    //         data: {
-    //             collectionName: "My Collection",
-    //             fields: [
-    //                 { key: 'name', type: 'string' },
-    //                 { key: 'age', type: 'number' },
-    //             ],
-    //         },
-    //     },
-    // },
-];
-
-
+export const initialNodes: Node<{ data: CollectionState }>[] = [];
 export const initialEdges: Edge[] = [];
 
 export interface NewCollectionModalProps {
@@ -42,4 +25,4 @@ export enum ConnectionLineType {
     Step = 'step',
     SmoothStep = 'smoothstep',
     SimpleBezier = 'simplebezier',
-  }
+}

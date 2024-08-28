@@ -34,12 +34,13 @@ function Otp() {
         }
     })
 
-
+    let randomNumber = Math.floor(Math.random() * 100) + 1;
     const userdata = {
         name: userinfo?.name,
         email: userinfo?.email,
         otp: value,
-        role: userinfo?.role
+        role: userinfo?.role,
+        avatar: `https://avatar.iran.liara.run/public/${randomNumber}`
     };
 
 
