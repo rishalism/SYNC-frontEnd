@@ -22,15 +22,15 @@ function UserLayout() {
 
 
     return (
-        // <DeviceCheck fallback={<SmallScreenMessage />}>
-        <div className="w-full flex flex-row relative h-screen">
-            <Header />
-            <ProjectContextProvider>
-                <SideBar />
-                <Outlet />
-            </ProjectContextProvider>
-        </div>
-        // </DeviceCheck>
+        <DeviceCheck fallback={<SmallScreenMessage />}>
+            <div className="w-full flex flex-row relative h-screen">
+                <Header />
+                <ProjectContextProvider>
+                    <SideBar />
+                    <Outlet />
+                </ProjectContextProvider>
+            </div>
+        </DeviceCheck>
     );
 }
 
