@@ -15,7 +15,7 @@ import {
 import '@xyflow/react/dist/style.css';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { GoPlus } from "react-icons/go";
-import { CollectionState, initialEdges, initialNodes } from '@/types/interfaces/IdbDesign';
+import IDbDesign, { CollectionState, initialEdges, initialNodes } from '@/types/interfaces/IdbDesign';
 import DbCollectionNode from '@/components/reactFlow/DbCollection';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
@@ -23,6 +23,7 @@ import { toast } from 'sonner';
 import { useParams } from 'react-router-dom';
 import usecheckDBdesignpermission from '@/customHook/DbPermissionCheck';
 import BlockPage from './errorPage/BlockPage';
+import { GetDbDesign, SaveDbDesign } from '@/api/dbDesignApi';
 
 export type Viewport = {
     x: number;
@@ -32,15 +33,12 @@ export type Viewport = {
 
 function DBdesignPage() {
     const collections = useSelector((state: RootState) => state.collection);
-    const { currentProjectInfo } = useSelector((state: RootState) => state.projects);
     const [openModal, setOpenModal] = useState(false);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [nodes, setNodes, onNodesChange] = useNodesState(collections);
     const [rfInstance, setRfInstance] = useState<any>(null);
     const [viewport, setViewport] = useState<Viewport>()
     const { projectId } = useParams()
-    const flowKey: string | undefined = projectId;
-
     const edgeOptions: DefaultEdgeOptions = {
         animated: true,
         style: {
@@ -48,6 +46,8 @@ function DBdesignPage() {
         }
     };
     const nodeTypes: NodeTypes = useMemo(() => ({ dbCollection: DbCollectionNode }), []);
+
+
 
     const handleAddCollection = (collectionState: CollectionState) => {
         const location = Math.random() * 800;
@@ -68,31 +68,40 @@ function DBdesignPage() {
 
     const onRestore = useCallback(() => {
         const restoreFlow = async () => {
-            if (flowKey && flowKey == projectId) {
-                const storedFlow = localStorage.getItem(flowKey);
-
-                if (storedFlow) {
-                    const flow = JSON.parse(storedFlow);
-
-                    if (flow) {
+            if (projectId !== 'undefined' && projectId) {
+                try {
+                    const response = await GetDbDesign(projectId)
+                    if (response?.data) {
+                        toast.dismiss()
+                        const flow = response.data
                         const { x = 0, y = 0, zoom = 1 } = flow.viewport;
                         setNodes(flow.nodes || []);
                         setEdges(flow.edges || []);
                         setViewport(flow.viewport)
                     }
+                } catch (error) {
                 }
             }
         };
 
         restoreFlow();
-    }, [setNodes, flowKey]);
+    }, [setNodes, projectId]);
 
 
-    const onSave = useCallback(() => {
-        if (rfInstance && flowKey !== 'undefined' && flowKey) {
+    const onSave = useCallback(async () => {
+        if (rfInstance && projectId !== 'undefined') {
             const flow = rfInstance.toObject();
-            localStorage.setItem(flowKey, JSON.stringify(flow));
-            toast.success('saved ')
+            // localStorage.setItem(flowKey, JSON.stringify(flow));
+            const data: IDbDesign = {
+                projectId: projectId || '',
+                nodes: flow.nodes,
+                edges: flow.edges,
+                viewport: flow.viewport
+            };
+            const response = await SaveDbDesign(data)
+            if (response) [
+                toast.success('saved')
+            ]
         } else {
             toast.warning('select a project to save a collection')
         }
@@ -116,6 +125,7 @@ function DBdesignPage() {
     if (isBlocked) {
         return <BlockPage />
     }
+
 
 
     return (

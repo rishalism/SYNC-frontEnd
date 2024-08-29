@@ -26,3 +26,46 @@ export enum ConnectionLineType {
     SmoothStep = 'smoothstep',
     SimpleBezier = 'simplebezier',
 }
+
+
+
+export interface IEdge {
+    animated: boolean;
+    id: string;
+    source: string;
+    sourceHandle: string;
+    style: { stroke: string };
+    target: string;
+    targetHandle: string;
+}
+
+export interface NodeData {
+    collectionName?: string;
+    fields?: any[];
+    data?: any;
+}
+
+export interface INode {
+    data: NodeData;
+    dragging: boolean;
+    id: string;
+    measured: { width: number; height: number };
+    position: { x: number; y: number };
+    selected: boolean;
+    type: string;
+}
+
+export interface Viewport {
+    x: number;
+    y: number;
+    zoom: number;
+}
+
+interface IDbDesign  {
+    projectId: string | undefined;
+    nodes: INode[];
+    edges: IEdge[];
+    viewport: Viewport;
+}
+
+export default IDbDesign;
