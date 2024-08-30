@@ -30,7 +30,7 @@ function UserLayout() {
                     <Outlet />
                 </ProjectContextProvider>
             </div>
-        </DeviceCheck>
+        -</DeviceCheck>
     );
 }
 

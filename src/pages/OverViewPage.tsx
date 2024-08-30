@@ -2,7 +2,7 @@ import EmptyProjectPage from "@/components/EmptyProjectPage";
 import { Button } from "@/components/ui/button";
 import errorHandler from "@/middlewares/errorHandler";
 import { useContext, useEffect, useState } from "react";
-import { Avatar, AvatarGroup } from "@nextui-org/react";
+import { Avatar, AvatarGroup, Spinner } from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import {
@@ -36,9 +36,13 @@ function OverViewPage() {
     const { ProjectleadInfo } = useSelector((state: RootState) => state.auth);
     const [editModal, setEditModal] = useState(false);
     const dispatch = useDispatch()
+    const [isloading, setIsloading] = useState(false)
+
     async function fetchProjectDetails() {
+        setIsloading(true)
         try {
             const projectData: any = await getProject();
+            setIsloading(false)
             if (projectData?.projectData.length > 0) {
                 setProject(projectData.projectData);
                 if (selected == null) {
@@ -52,6 +56,8 @@ function OverViewPage() {
             return projectData?.projectData[0];
         } catch (error) {
             errorHandler(error);
+        } finally {
+            setIsloading(false)
         }
     }
 
@@ -82,70 +88,72 @@ function OverViewPage() {
 
     return (
         <div className='flex flex-col  w-full items-center justify-center p-4 md:p-40'>
-            {selected ?
-                <div className="p-5 w-full border-2 shadow-inner rounded-lg">
-                    <div className="flex flex-col w-full h-full gap-8">
-                        <div className="flex flex-col md:flex-row justify-between">
-                            <div className="border-2 flex flex-col md:flex-row items-center justify-between p-8 rounded-md w-full">
-                                <h2 className="text-4xl font-bold mb-4 md:mb-0">{selected?.projectName}</h2>
-                                {ProjectleadInfo?.id &&
-                                    <AlertDialog>
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant="secondary" size="icon">
-                                                    <BsThreeDotsVertical />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end">
-                                                <DropdownMenuItem onClick={() => HandleEditProject(selected?._id)}>
-                                                    Edit
-                                                </DropdownMenuItem>
-                                                <AlertDialogTrigger className="w-full">
-                                                    <DropdownMenuItem className="w-full" >
-                                                        Delete
+            {isloading ? <Spinner /> : <>
+                {selected ?
+                    <div className="p-5 w-full border-2 shadow-inner rounded-lg">
+                        <div className="flex flex-col w-full h-full gap-8">
+                            <div className="flex flex-col md:flex-row justify-between">
+                                <div className="border-2 flex flex-col md:flex-row items-center justify-between p-8 rounded-md w-full">
+                                    <h2 className="text-4xl font-bold mb-4 md:mb-0">{selected?.projectName}</h2>
+                                    {ProjectleadInfo?.id &&
+                                        <AlertDialog>
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button variant="secondary" size="icon">
+                                                        <BsThreeDotsVertical />
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end">
+                                                    <DropdownMenuItem onClick={() => HandleEditProject(selected?._id)}>
+                                                        Edit
                                                     </DropdownMenuItem>
-                                                </AlertDialogTrigger>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                        <AlertDialogContent>
-                                            <AlertDialogHeader>
-                                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                                                <AlertDialogDescription>
-                                                    This action cannot be undone. This will permanently delete All your data from our servers.
-                                                </AlertDialogDescription>
-                                            </AlertDialogHeader>
-                                            <AlertDialogFooter>
-                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                <AlertDialogAction onClick={() => deleteConfimed(selected?._id)} >Continue</AlertDialogAction>
-                                            </AlertDialogFooter>
-                                        </AlertDialogContent>
-                                    </AlertDialog>
-                                }
+                                                    <AlertDialogTrigger className="w-full">
+                                                        <DropdownMenuItem className="w-full" >
+                                                            Delete
+                                                        </DropdownMenuItem>
+                                                    </AlertDialogTrigger>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                            <AlertDialogContent>
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                        This action cannot be undone. This will permanently delete All your data from our servers.
+                                                    </AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                    <AlertDialogAction onClick={() => deleteConfimed(selected?._id)} >Continue</AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
+                                    }
+                                </div>
                             </div>
-                        </div>
-                        <p className="text-sm text-neutral-500">{selected?.description}</p>
-                        <div className="space-y-3">
-                            <h2 className="text-3xl font-bold">Project Lead</h2>
-                            <div className="flex flex-row items-center gap-4 text-neutral-500">
-                                <Avatar src={`${selected?.projectOwner?.avatar || "https://github.com/shadcn.png"}`} />
-                                <span>{selected?.projectOwner?.name}</span>
+                            <p className="text-sm text-neutral-500">{selected?.description}</p>
+                            <div className="space-y-3">
+                                <h2 className="text-3xl font-bold">Project Lead</h2>
+                                <div className="flex flex-row items-center gap-4 text-neutral-500">
+                                    <Avatar src={`${selected?.projectOwner?.avatar || "https://github.com/shadcn.png"}`} />
+                                    <span>{selected?.projectOwner?.name}</span>
+                                </div>
                             </div>
-                        </div>
-                        <div className="space-y-3 mb-8">
-                            <h2 className="text-3xl font-bold">Team Members</h2>
-                            <div className="flex flex-wrap gap-2">
-                                {selected?.ProjectMembers.map((members: ProjectMembers, index: number) => (
-                                    <AvatarGroup isBordered max={3}
-                                        key={members._id}>
-                                        <Avatar src={`${members.avatar || "https://github.com/shadcn.png"}`} alt="User avatar" />
-                                    </AvatarGroup>
-                                ))}
+                            <div className="space-y-3 mb-8">
+                                <h2 className="text-3xl font-bold">Team Members</h2>
+                                <div className="flex flex-wrap gap-2">
+                                    {selected?.ProjectMembers.map((members: ProjectMembers, index: number) => (
+                                        <AvatarGroup isBordered max={3}
+                                            key={members._id}>
+                                            <Avatar src={`${members.avatar || "https://github.com/shadcn.png"}`} alt="User avatar" />
+                                        </AvatarGroup>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                : <EmptyProjectPage openModal={openModal} setOpenModal={setOpenModal} />
-            }
+                    : <EmptyProjectPage openModal={openModal} setOpenModal={setOpenModal} />
+                }
+            </>}
             <ProjectEditModal openModal={editModal} setOpenModal={setEditModal} />
         </div >
     );

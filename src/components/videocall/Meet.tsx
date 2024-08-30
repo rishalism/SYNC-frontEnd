@@ -30,9 +30,9 @@ export default function Meet() {
     const { currentProjectInfo } = useSelector((state: RootState) => state.projects)
     const { ProjectleadInfo, TeamMemberInfo } = useSelector((state: RootState) => state.auth)
     const dispatch = useDispatch()
-    const url = window.location.protocol + '//' + window.location.host + window.location.pathname + '?roomID=' + roomID
-    console.log(url);
+    const url = `${import.meta.env.VITE_CLIENT_URL}/Meet/true?roomID=${roomID}`
 
+    
     const navigate = useNavigate()
 
 
