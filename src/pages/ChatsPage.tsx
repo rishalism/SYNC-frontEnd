@@ -147,7 +147,7 @@ function ChatsPage() {
                                             <p className="text-sm font-semibold">{msg.sender.name}</p>
                                         </div>
                                         <div className="chat-bubble">
-                                            {msg.sender.url ? <Link to={msg.sender.url}><p>{msg.text} . click to join !</p></Link> : <p>{msg.text}</p>}
+                                            {msg.sender.url ? <Link to={msg.sender.url}><p>{msg.text} . click to join {msg.sender.url}!</p></Link> : <p>{msg.text}</p>}
                                             <time className="text-xs opacity-50">{new Date(msg.timestamp).toLocaleTimeString()}</time>
                                         </div>
                                     </div>
