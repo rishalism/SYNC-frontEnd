@@ -79,7 +79,8 @@ function VideoCallPage() {
             return;
         } else if (projectId && currentUser) {
             const roomid = randomID(5)
-            const url = `${import.meta.env.VITE_CLIENT_URL}/Meet/true?roomID=${roomid}`
+            console.log(import.meta.env.VITE_CLIENT_URL), 'client url';
+            const url = `${import.meta.env.VITE_CLIENT_URL || 'https://sync-front-end.vercel.app'}/Meet/true?roomID=${roomid}`
             const newMessage: Message = {
                 projectId: projectId,
                 id: Date.now().toString(),
