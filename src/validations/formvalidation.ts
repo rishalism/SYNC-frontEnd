@@ -62,8 +62,20 @@ export const inviteMembersSchema = yup.object().shape({
 
 
 export const urlValidationSchema = yup.object().shape({
-    url: yup.string().url('must be a valid URL').required('URL is required')
-})
+    url: yup.string()
+        .test('valid-url', 'Must be a valid URL', (value) => {
+            if (!value) return false;
+
+            try {
+                const url = new URL(value);
+                return ['http:', 'https:'].includes(url.protocol) || url.hostname === 'localhost';
+            } catch {
+                return false;
+            }
+        })
+        .required('URL is required'),
+});
+
 
 
 
