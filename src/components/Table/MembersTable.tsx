@@ -48,7 +48,7 @@ function MembersTable() {
 
     useEffect(() => {
         fetchCurrentProjectMembers()
-    }, [currentProjectInfo, projectId]);
+    }, []);
 
     async function fetchCurrentProjectMembers() {
         if (projectId !== 'undefined') {

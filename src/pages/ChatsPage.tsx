@@ -58,6 +58,7 @@ function ChatsPage() {
             if (projectId !== 'undefined') {
                 setIsloading(true)
                 const response = await GetChats(projectId);
+                setIsloading(false)
                 if (response) {
                     setMessages(response?.data.messages || []);
                     setIsloading(false)

@@ -40,11 +40,13 @@ Api.interceptors.response.use(
                 return Api(originalRequest);
             } catch (error) {
                 toast.error("Session timeout! Please login", { position: 'top-center' });
-                localStorage.removeItem('accessToken');
-                localStorage.removeItem('Project-Lead');
-                localStorage.removeItem('Team-Member');
+                if (!window.location.pathname.includes('/choose-role')) {
+                    localStorage.removeItem('accessToken');
+                    localStorage.removeItem('Project-Lead');
+                    localStorage.removeItem('Team-Member');
+                    window.location.href = "/choose-role";
+                }
 
-                window.location.href = "/choose-role";
             }
         }
         return Promise.reject(error);
